@@ -1,9 +1,9 @@
-import NSLBigTable from './nslview.js';
-import NSLRequest from './nslrequest.js';
-import NSLDOM from './nsldom.js';
-import NSLURL from './nslurl.js';
+import NSLBigTable from './old-nslview.js';
+import NSLRequest from './old-nslrequest.js';
+import NSLDOM from './old-nsldom.js';
+import NSLURL from './old-nslurl.js';
 
-export default class NSL {
+export default class NSLRoot {
 
 	/**
 	 * Function for making an AJAX call to a public development iteration of a NSL-standard API.

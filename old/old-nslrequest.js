@@ -1,4 +1,4 @@
-import NSL from './nsl.js';
+import NSL from './old-nsl.js';
 
 /**
  * Class for storing request and response data.
@@ -27,7 +27,7 @@ export default class NSLRequest {
 		} else {
 			env.path = '';
 		}
-		if( typeof parameter !== 'undefined' ) {
+		if( typeof parameters !== 'undefined' ) {
 			env.parameters = parameters
 		} else {
 			env.parameters = {};
@@ -38,5 +38,16 @@ export default class NSLRequest {
 			env.data = {};
 		}
 	}
+
+	/**
+	 * Function for interacting with requests and their associated data, including AJAX calls.
+	 *
+	 * @param {Object} request - request object.
+	 * @param {Object} callbackFunction - Function to execute upon succes.
+	 */
+  makeRequest( request, callbackFunction ) {
+    var env = this;
+		NSL.ajax( request.type, request.base, request.path, request.parameters, callbackFunction );
+  }
 
 }

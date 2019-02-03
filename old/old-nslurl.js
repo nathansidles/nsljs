@@ -1,4 +1,4 @@
-import NSL from './nsl.js';
+import NSL from './old-nsl.js';
 
 /**
  * Class for storing information about a URL.

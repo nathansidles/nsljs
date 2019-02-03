@@ -1,4 +1,5 @@
-import NSL from './nsl.js';
+import NSL from './old-nsl.js';
+import NSLView from './old-nslview.js';
 
 /**
  * Class for storing DOM elements in a friendlier way.
@@ -15,6 +16,10 @@ export default class NSLDOM {
 		env['$descendants'];
 		env['$siblings'];
   }
+
+	new( element, ancestor ) {
+		return new NSLDOM( element, ancestor );
+	}
 
 	getElement() {
 		var env = this;
@@ -114,7 +119,7 @@ export default class NSLDOM {
 					if( e.lastIndexOf( '$', 0 ) !== 0 ) {
 						env.clearChildrenRecursive( element[i][e] );
 					}
-					NSL.clearNode( tempNode );
+					NSLView.clearNode( tempNode );
 				});
 			}
 		} else {
@@ -122,7 +127,7 @@ export default class NSLDOM {
 				if( e.lastIndexOf( '$', 0 ) !== 0 ) {
 					env.clearChildrenRecursive( element[e] );
 				}
-				NSL.clearNode( element['$element'] );
+				NSLView.clearNode( element['$element'] );
 			});
 		}
 	}
