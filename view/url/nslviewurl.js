@@ -1,6 +1,6 @@
 "use strict";
 
-import NSLHelper from '/js/helper/nslhelper.js';
+import NSLHelper from '/nsljs/helper/nslhelper.js';
 
 export default class NSLViewURL {
 

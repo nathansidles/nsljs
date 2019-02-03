@@ -1,6 +1,6 @@
 "use strict";
 
-import NSLHelper from '/js/helper/nslhelper.js';
+import NSLHelper from '/nsljs/helper/nslhelper.js';
 
 /*
  * This is a pseudo-abstract class. It implements the Observer pattern. It is the root class for all classes in the NSL.

@@ -1,6 +1,6 @@
 "use strict";
 
-import NSLHelper from '/js/helper/nslhelper.js';
+import NSLHelper from '/nsljs/helper/nslhelper.js';
 import NSLModelDOM from './dom/nslmodeldom.js';
 
 export default class NSLModel {
