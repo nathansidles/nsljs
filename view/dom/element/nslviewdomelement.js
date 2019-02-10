@@ -5,15 +5,15 @@ import NSLViewDOMElementButton from './button/nslviewdomelementbutton.js';
 
 export default class NSLViewDOMElement extends NSLViewDOMElementAbstract {
 
-	constructor( appendee, tagName, classes, attributes, content, prependee ) {
-		super( appendee, tagName, classes, attributes, content, prependee );
+	constructor( object ) {
+		super( object );
 	}
 
-	new( appendee, tagName, classes, attributes, content, prependee ) {
-		if( typeof appendee === 'undefined' ) {
-			appendee = document.getElementsByTagName( 'html' )[0];
+	new( object ) {
+		if( typeof object === 'undefined' ) {
+			object = {};
 		}
-		return new NSLViewDOMElement( appendee, tagName, classes, attributes, content, prependee );
+		return new NSLViewDOMElement( object );
 	}
 
 	get button() {

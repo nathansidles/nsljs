@@ -4,15 +4,15 @@ import NSLViewDOMStructureStageAbstract from './nslviewdomstructurestage-abstrac
 
 export default class NSLViewDOMStructureStage extends NSLViewDOMStructureStageAbstract {
 
-	constructor( appendee ) {
-		super( appendee );
+	constructor( object ) {
+		super( object );
 	}
 
-	new( appendee ) {
-		if( typeof appendee === 'undefined' ) {
-			appendee = document.getElementsByTagName( 'body' )[0];
+	new( object ) {
+		if( typeof object === 'undefined' ) {
+			object = {};
 		}
-		return new NSLViewDOMStructureStage( appendee );
+		return new NSLViewDOMStructureStage( object );
 	}
 
 }

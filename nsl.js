@@ -23,7 +23,7 @@ export default class NSL extends NSLAbstract {
 	}
 
 	static get helper() {
-		return new NSLAbstract();
+		return new NSLHelper();
 	}
 
 	static get model() {

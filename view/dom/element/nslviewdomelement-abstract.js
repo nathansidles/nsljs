@@ -4,20 +4,19 @@ import NSLViewDOMAbstract from './../nslviewdom-abstract.js';
 
 export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
 
-	constructor( appendee, tagName, classes, attributes, content, prependee ) {
-		super();
-		if( typeof appendee !== 'undefined' ) {
-			if( typeof tagName === 'undefined' ) {
-				this['$node'] = appendee;
+	constructor( object ) {
+		super( object );
+		if( typeof object !== 'undefined' ) {
+			if( typeof object.tagName !== 'undefined' ) {
+				this['$node'] = this.create( object );
 			} else {
-				this['$node'] = this.create( appendee, tagName, classes, attributes, content, prependee );
+				this['$node'] = object.appendee;
 			}
 		}
-		this['$listeners'] = {};
 	}
 
 	/**
-	 * Function for creating an HTML element. Allows customization of placement, tag name, classes, attributes, and text content. Only placement (appendee) and tagName are required.
+	 * Function for creating an HTML element. Allows customization of placement, tag name, classes, attributes, and text content.
 	 *
 	 * @param {Object} appendee - HTMLElement or NSLViewDOM object on which to attach new element. Required.
 	 * @param {String} tagName - Type of HTML element to create. Required.
@@ -28,122 +27,34 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
 	 *
 	 * @return {Object} - Created HTML element.
 	 */
-	create( appendee, tagName, classes, attributes, content, prependee ) {
+	create( object ) {
+		var element = document.createElement( object.tagName );
+		object.appendee = this.nodeExtractor( object.appendee );
 
-		var element = document.createElement( tagName );
-		var inputs = this.createInputsIdentifier( classes, attributes, content, prependee );
-		appendee = this.nodeExtractor( appendee );
-
-		for( var i in inputs.classes ) {
-			element.classList.add( inputs.classes[i] );
+		for( var i in object.classes ) {
+			element.classList.add( object.classes[i] );
 		}
 
-		Object.getOwnPropertyNames( inputs.attributes ).forEach( function( e ) {
-			element.setAttribute( e, inputs.attributes[e] )
-		});
-
-		if( inputs.content !== '' ) {
-			element.appendChild( document.createTextNode( inputs.content ) );
+		if( typeof object.attributs !== 'undefined' ) {
+			Object.getOwnPropertyNames( object.attributes ).forEach( function( e ) {
+				element.setAttribute( e, object.attributes[e] )
+			});
 		}
 
-		if( typeof prependee !== 'undefined' ) {
-			prependee = this.nodeExtractor( inputs.prependee );
-			appendee.insertBefore( element, prependee );
+		if( typeof object.content !== 'undefined' && object.content !== '' ) {
+			element.appendChild( document.createTextNode( object.content ) );
+		}
+
+		if( typeof object.prependee !== 'undefined' && typeof object.appendee !== 'undefined' ) {
+			object.prependee = this.nodeExtractor( object.prependee );
+			object.appendee.insertBefore( element, object.prependee );
 		} else {
-			appendee.appendChild( element );
+			if( typeof object.appendee !== 'undefined' ) {
+				object.appendee.appendChild( element );
+			}
 		}
 
 		return element;
-
-	}
-
-	/**
-	 * Helper function for create() that identifies the type of input that has been provided.
-	 *
-	 * @param {Array} classes - Classes to attach to new element. Optional.
-	 * @param {Object} attributes - Attributes to attach to new element. Optional.
-	 * @param {String} content - Text to attach to new element. Optional.
-	 * @param {Object} prependee -  HTMLElement or NSLViewDOM object on which to prepend new element. Optional.
-	 *
-	 * @return {Object} - Returned object with four properties, one of which may be customized per the inputted property.
-	 */
-	createInputsIdentifier( classes, attributes, content, prependee ) {
-
-		var tempReturn = {};
-
-		tempReturn.classes = [];
-		tempReturn.attributes = {};
-		tempReturn.content = '';
-		tempReturn.prependee = {};
-
-		if( Array.isArray( classes ) ) {
-			tempReturn.classes = classes;
-		}
-		if( Array.isArray( attributes ) ) {
-			tempReturn.classes = attributes;
-		}
-		if( Array.isArray( content ) ) {
-			tempReturn.classes = content;
-		}
-		if( Array.isArray( prependee ) ) {
-			tempReturn.classes = prependee;
-		}
-
-		if( !Array.isArray( classes ) && typeof classes === 'object' && classes !== null ) {
-			if( ( classes.constructor.name.lastIndexOf( 'HTML', 0 ) === 0
-					&& classes.constructor.name.indexOf( 'Element', classes.constructor.name.length - 7 ) !== 0
-					) || classes.constructor.name.lastIndexOf( 'NSLViewDOM' ) === 0
-			) {
-				tempReturn.prependee = classes;
-			} else {
-				tempReturn.attributes = classes;
-			}
-		}
-		if( !Array.isArray( attributes ) && typeof attributes === 'object' && attributes !== null ) {
-			if( ( attributes.constructor.name.lastIndexOf( 'HTML', 0 ) === 0
-					&& attributes.constructor.name.indexOf( 'Element', attributes.constructor.name.length - 7 ) !== 0
-					) || attributes.constructor.name.lastIndexOf( 'NSLViewDOM' ) === 0
-			) {
-				tempReturn.prependee = attributes;
-			} else {
-				tempReturn.attributes = attributes;
-			}
-		}
-		if( !Array.isArray( content ) && typeof content === 'object' && content !== null ) {
-			if( ( content.constructor.name.lastIndexOf( 'HTML', 0 ) === 0
-					&& content.constructor.name.indexOf( 'Element', content.constructor.name.length - 7 ) !== 0
-				) || content.constructor.name.lastIndexOf( 'NSLViewDOM' ) === 0
-			) {
-				tempReturn.prependee = content;
-			} else {
-				tempReturn.attributes = content;
-			}
-		}
-		if( !Array.isArray( prependee ) && typeof prependee === 'object' && prependee !== null ) {
-			if( ( prependee.constructor.name.lastIndexOf( 'HTML', 0 ) === 0
-					&& prependee.constructor.name.indexOf( 'Element', prependee.constructor.name.length - 7 ) !== 0
-				) || prependee.constructor.name.lastIndexOf( 'NSLViewDOM' ) === 0
-			) {
-				tempReturn.prependee = prependee;
-			} else {
-				tempReturn.attributes = prependee;
-			}
-		}
-
-		if( typeof classes === 'string' ) {
-			tempReturn.content = classes;
-		}
-		if( typeof attributes === 'string' ) {
-			tempReturn.content = attributes;
-		}
-		if( typeof content === 'string' ) {
-			tempReturn.content = content;
-		}
-		if( typeof prependee === 'string' ) {
-			tempReturn.content = prependee;
-		}
-
-		return tempReturn;
 
 	}
 
@@ -295,18 +206,6 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
 		}
 
 		return tempReturn;
-
-	}
-
-	/**
-	 * Function for adding an event listener to an HTML element.
-	 *
-	 * @param {Object} element - HTMLElement or NSLViewDOM object to toggle.
-	 */
-	addEventListener( event, inputFunction ) {
-
-		this['$node'].addEventListener( event, inputFunction );
-		this['$listeners'][inputFunction] = inputFunction;
 
 	}
 

@@ -7,8 +7,20 @@ import NSLControllerAbstract from './../nslcontroller-abstract.js';
  */
 export default class NSLControllerDOMAbstract extends NSLControllerAbstract {
 
-	constructor( actions, models, views ) {
-		super();
+	constructor( parameters ) {
+		super( parameters );
+	}
+
+	addView( view ) {
+		view.addSubscriber( this );
+	}
+
+	addEvent( event, view ) {
+	}
+
+	getNotification( publisher, event ) {
+		console.log( publisher );
+		console.log( event );
 	}
 
 }

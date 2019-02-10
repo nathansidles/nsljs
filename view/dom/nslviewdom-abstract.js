@@ -1,5 +1,7 @@
 "use strict";
 
+import NSLHelper from '/nsljs/helper/nslhelper.js';
+
 import NSLViewAbstract from './../nslview-abstract.js';
 
 /*
@@ -7,9 +9,12 @@ import NSLViewAbstract from './../nslview-abstract.js';
  */
 export default class NSLViewDOMAbstract extends NSLViewAbstract {
 
-	constructor( node ) {
-		super();
-		this['$node'] = this.nodeExtractor( node );
+	constructor( object ) {
+		super( object );
+		if( typeof object !== 'undefined' ) {
+			this['$node'] = this.nodeExtractor( object.node );
+		}
+		this['$listeners'] = {};
 	}
 
 	/**
@@ -23,14 +28,13 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
 
 		if( typeof node !== 'undefined' ) {
 			var nodeType = node.constructor.name;
-
 			if( nodeType.lastIndexOf( 'HTML', 0 ) === 0 && nodeType.indexOf( 'Element', nodeType.length - 7 ) !== 0 ) {
 				return node;
 			} else if( nodeType.lastIndexOf( 'NSLViewDOM' ) === 0 ) {
 				return node['$node'];
 			}
 		} else {
-			return;
+			return node;
 		}
 
 	}
@@ -153,6 +157,82 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
 		if( typeof this.name !== 'undefined' && name.lastIndexOf( '$' ) === -1 ) {
 			delete this.name;
 		}
+	}
+
+	/**
+	 * Function for adding an event listener to a DOM element.
+	 *
+	 * @param {String} event - event to listen for.
+	 * @param {Object} inputFunction - function to execute in response to event.
+	 */
+	addEventListener( event, inputFunction, parameters ) {
+		var env = this;
+		this['$node'].addEventListener( event, function() { env.notifySubscribers( event ) } );
+		if( typeof this['$listeners'][event] === 'undefined' ) {
+			this['$listeners'][event] = {};
+		}
+		this['$listeners'][event][inputFunction] = inputFunction;
+	}
+
+	/**
+	 * Function for removing an event listener from a DOM element.
+	 *
+	 * @param {String} event - event to remove.
+	 * @param {Object} inputFunction - function remove. If string, function is removed by name.
+	 */
+	removeEventListener( event, inputFunction ) {
+		this['$node'].removeEventListener( event, inputFunction );
+		if( typeof inputFunction === 'string' ) {
+			Object.getOwnPropertyNames( this['$listeners'][event] ).forEach( function( e ) {
+				if( this['$listeners'][event][e].name === inputFunction ) {
+					delete this['$listeners'][event][inputFunction];
+				}
+			});
+		}
+		delete this['$listeners'][event][inputFunction];
+		if( NSLHelper.isEmpty( this['$listeners'][event] ) ) {
+			delete this['$listeners'][event];
+		}
+	}
+
+	/**
+	 * Function for removing all functions associated with an event from a DOM element.
+	 *
+	 * @param {String} event - event to remove.
+	 */
+	removeEventListeners( event ) {
+		Object.getOwnPropertyNames( this['$listeners'][event] ).forEach( function( e ) {
+			this['$node'].removeEventListener( event, this['$listeners'][event][e] );
+		});
+		delete this['$listeners'][event];
+	}
+
+	/**
+	 * Function for removing all event listeners from a DOM element.
+	 */
+	removeAllEventListeners() {
+		Object.getOwnPropertyNames( this['$listeners'] ).forEach( function( e ) {
+			Object.getOwnPropertyNames( this['$listeners'][e] ).forEach( function( f ) {
+				this['$node'].removeEventListener( this['$listeners'][e], this['$listeners'][event][e][f] );
+			});
+		});
+		this['$listeners'] = {};
+	}
+
+	/**
+	 * Function for notifying subscribers that an event has occurred. In practice, these should be NSL constrollers. Similar to emit() in node.js.
+	 *
+	 * @param {String} event - event to notify subscribers about.
+	 */
+	notifySubscribers( event ) {
+		var env = this;
+		Object.getOwnPropertyNames( env['$subscribers'] ).forEach( function( e ) {
+			for( var i = 0, length = env['$subscribers'][e].length; i < length; i++ ) {
+				if( typeof env['$subscribers'][e][i].getNotification === 'function' ) {
+					env['$subscribers'][e][i].getNotification( env, event );
+				}
+			}
+		});
 	}
 
 }

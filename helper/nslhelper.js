@@ -2,6 +2,8 @@
 
 export default class NSLHelper {
 
+	constructor() {}
+
 	/**
 	 * Function for transforming one- and two-dimensional arrays into objects, with a row's value at the offset serving as key.
 	 *
@@ -10,7 +12,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Object} - Array-sourced object.
 	 */
-  static arrayToObject( array, offset ) {
+  arrayToObject( array, offset ) {
     var temp = {};
     for( var i = 0; i < array.length; i++ ) {
 			if( typeof array[i] === 'object' ) {
@@ -29,7 +31,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Array} - Object-sourced array.
 	 */
-	static objectToArray( object ) {
+	objectToArray( object ) {
 		var temp = [];
 		Object.getOwnPropertyNames( object ).forEach( function( e ) {
 			temp.push( object[e] );
@@ -45,7 +47,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Number} - Column offset.
 	 */
-  static getColumnIndex( metadata, columnName ) {
+  getColumnIndex( metadata, columnName ) {
     for( var i = 0; i < metadata.length; i++ ) {
       if( metadata[i] == columnName ) {
         return i;
@@ -64,7 +66,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Array} - set of related IDs, including the original IDs.
 	 */
-	static getRelatedIds( id, idOffset, relativeOffset, object ) {
+	getRelatedIds( id, idOffset, relativeOffset, object ) {
 		var env = this;
 		var tempArray = [ String( id ) ];
 		tempArray = tempArray.concat( env.getRelatedIdsRecursive( id, idOffset, relativeOffset, env.deepCopy( object ) ) );
@@ -83,7 +85,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Array} - set of related IDs, including the original IDs.
 	 */
-	static getRelatedIdsRecursive( id, idOffset, relativeOffset, object ) {
+	getRelatedIdsRecursive( id, idOffset, relativeOffset, object ) {
 		var env = this;
 		var tempArray = [];
 		if( Array.isArray( object ) ) {
@@ -114,7 +116,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Boolean} - Whether or not the array has this value.
 	 */
-	static hasProperty( target, source ) {
+	hasProperty( target, source ) {
 		if( Array.isArray( target ) ) {
 			if( Array.isArray( source ) ) {
 				var length = source.length;
@@ -140,7 +142,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Array} - deduplicated array.
 	 */
-	static deduplicate( array, idOffset ) {
+	deduplicate( array, idOffset ) {
 		var env = this;
 		return env.objectToArray( env.arrayToObject( array, idOffset ) );
  	}
@@ -163,7 +165,7 @@ export default class NSLHelper {
  	 *
  	 * @return {String} - URL of the script (or an empty string if the script does not exist).
  	 */
-	static getScriptLocation( name ) {
+	getScriptLocation( name ) {
 		var scripts = document.getElementsByTagName( 'script' );
 		for( var i in scripts ) {
 			if( scripts[i].src && scripts[i].src.endsWith( name + '.js' ) ) {
@@ -181,7 +183,7 @@ export default class NSLHelper {
  	 *
  	 * @return {Array} - array that contains only properties in the filter array.
  	 */
-	static capitalize( string, type ) {
+	capitalize( string, type ) {
 		if( typeof type === 'undefined' || type === 'first' ) {
 			return string.charAt( 0 ).toUpperCase() + string.slice( 1 );
 		} else if( type === 'camel' ) {
@@ -205,7 +207,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Array} - array that contains only properties in the filter array.
 	 */
-	static filterArray( filtered, filter ) {
+	filterArray( filtered, filter ) {
 		return filtered.filter( function( e ) {
 			return filter.indexOf( e ) < 0;
 		});
@@ -219,7 +221,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Object} - object that contains only properties in the filter array.
 	 */
-	static filterObject( object, properties ) {
+	filterObject( object, properties ) {
 		var tempObject = NSLAbstract.deepCopy( object );
 		Object.getOwnPropertyNames( tempObject ).forEach( function( e ) {
 			if( !NSLAbstract.hasProperty( properties, e ) ) {
@@ -236,10 +238,37 @@ export default class NSLHelper {
 	 *
 	 * @return {String} - Formatted number.
 	 */
-	static numberWithCommas( x ) {
+	numberWithCommas( x ) {
 		var parts = x.toString().split( '.' );
 		parts[0] = parts[0].replace( /\B(?=(\d{3})+(?!\d) )/g, ',' );
 		return parts.join( '.' );
+	}
+
+	/**
+	 * Function for determining if an object or array has any elements or properties.
+	 *
+	 * @param {Object} object - Object or array to test.
+	 *
+	 * @return {Boolean} - True if the object is empty, false otherwise.
+	 */
+	isEmpty( object ) {
+		if( Array.isArray( object ) ) {
+			if( object.length === 0 ) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			if( typeof object === 'object' ) {
+				var tempReturn = true;
+				Object.getOwnPropertyNames( object ).forEach( function( e ) {
+					tempReturn = false;
+				});
+				return tempReturn;
+			} else {
+				return true;
+			}
+		}
 	}
 
 }

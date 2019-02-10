@@ -6,12 +6,15 @@ import NSLViewDOMStructure from './structure/nslviewdomstructure.js';
 
 export default class NSLViewDOM extends NSLViewDOMAbstract {
 
-	constructor() {
-		super();
+	constructor( object ) {
+		super( object );
 	}
 
-	new() {
-		return new NSLViewDOM();
+	new( object ) {
+		if( typeof object === 'undefined' ) {
+			object = {};
+		}
+		return new NSLViewDOM( object );
 	}
 
 	get element() {

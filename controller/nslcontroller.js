@@ -8,8 +8,8 @@ import NSLControllerDOM from './dom/nslcontrollerdom.js';
 
 export default class NSLController extends NSLControllerAbstract {
 
-	constructor() {
-		super();
+	constructor( parameters ) {
+		super( parameters );
 	}
 
 	new() {

@@ -5,11 +5,14 @@ import NSLViewDOMStructureStage from './stage/nslviewdomstructurestage.js';
 
 export default class NSLViewDOMStructure extends NSLViewDOMStructureAbstract {
 
-	constructor() {
-		super();
+	constructor( object ) {
+		super( object );
 	}
 
 	new() {
+		if( typeof object === 'undefined' ) {
+			object = {};
+		}
 		return new NSLViewDOMStructure();
 	}
 

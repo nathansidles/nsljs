@@ -9,8 +9,8 @@ export default class NSLModel {
 
 	}
 
-	new() {
-		return new NSLModel();
+	new( data ) {
+		return new NSLModel( data );
 	}
 
 	get dom() {

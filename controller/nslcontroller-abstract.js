@@ -7,18 +7,11 @@ import NSLAbstract from './../nsl-abstract.js';
  */
 export default class NSLControllerAbstract extends NSLAbstract {
 
-	constructor() {
-		super();
+	constructor( parameters ) {
+		super( parameters );
 	}
 
-	addView() {}
 
-	removeView() {}
 
-	removeViews() {}
 
-	addEventListener( view, event, controller ) {}
-
-	removeEventListener( view, event, controller ) {}
-	
 }

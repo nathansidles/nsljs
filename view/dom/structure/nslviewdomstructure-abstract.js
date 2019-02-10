@@ -8,8 +8,10 @@ import NSLViewDOMElement from './../element/nslviewdomelement.js';
  */
 export default class NSLViewDOMStructureAbstract extends NSLViewDOMAbstract {
 
-	constructor( appendee ) {
-		super( appendee );
+	constructor( object ) {
+		super( object );
+		if( typeof object !== 'undefined' ) {
+		}
 	}
 
 }

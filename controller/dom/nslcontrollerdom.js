@@ -4,12 +4,12 @@ import NSLControllerDOMAbstract from './nslcontrollerdom-abstract.js';
 
 export default class NSLControllerDOM extends NSLControllerDOMAbstract {
 
-	constructor( actions, models, views ) {
-		super( models, views, actions );
+	constructor( parameters ) {
+		super( parameters );
 	}
 
-	new( actions, models, views ) {
-		return new NSLControllerDOM( actions, models, views );
+	new() {
+		return new NSLControllerDOM();
 	}
 
 
