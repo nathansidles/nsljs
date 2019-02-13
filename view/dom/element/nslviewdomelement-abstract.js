@@ -136,12 +136,18 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
 	 * @param {Object} element - HTMLElement or NSLViewDOM object in which to replace text.
 	 * @param {String} text - Text to add to element.
 	 */
-	replaceText( element, text ) {
-		element = this.nodeExtractor( element );s
-		for( var node in element.childNodes ) {
-			if( element.childNodes[node].nodeType == 3 ) {
-				element.removeChild( element.childNodes[node] );
-				element.appendChild( document.createTextNode( text ) );
+	replaceText( parameters ) {
+		if( typeof parameters !== 'undefined' ) {
+			if( typeof parameters.element === 'undefined' ) {
+				parameters.element = this['$node'];
+			} else {
+				parameters.element = this.nodeExtractor( parameters.element );
+			}
+			for( var node in parameters.element.childNodes ) {
+				if( parameters.element.childNodes[node].nodeType == 3 ) {
+					parameters.element.removeChild( parameters.element.childNodes[node] );
+					parameters.element.appendChild( document.createTextNode( parameters.text ) );
+				}
 			}
 		}
 	}

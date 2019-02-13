@@ -12,7 +12,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Object} - Array-sourced object.
 	 */
-  arrayToObject( array, offset ) {
+  static arrayToObject( array, offset ) {
     var temp = {};
     for( var i = 0; i < array.length; i++ ) {
 			if( typeof array[i] === 'object' ) {
@@ -31,7 +31,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Array} - Object-sourced array.
 	 */
-	objectToArray( object ) {
+	static objectToArray( object ) {
 		var temp = [];
 		Object.getOwnPropertyNames( object ).forEach( function( e ) {
 			temp.push( object[e] );
@@ -47,7 +47,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Number} - Column offset.
 	 */
-  getColumnIndex( metadata, columnName ) {
+  static getColumnIndex( metadata, columnName ) {
     for( var i = 0; i < metadata.length; i++ ) {
       if( metadata[i] == columnName ) {
         return i;
@@ -66,7 +66,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Array} - set of related IDs, including the original IDs.
 	 */
-	getRelatedIds( id, idOffset, relativeOffset, object ) {
+	static getRelatedIds( id, idOffset, relativeOffset, object ) {
 		var env = this;
 		var tempArray = [ String( id ) ];
 		tempArray = tempArray.concat( env.getRelatedIdsRecursive( id, idOffset, relativeOffset, env.deepCopy( object ) ) );
@@ -85,7 +85,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Array} - set of related IDs, including the original IDs.
 	 */
-	getRelatedIdsRecursive( id, idOffset, relativeOffset, object ) {
+	static getRelatedIdsRecursive( id, idOffset, relativeOffset, object ) {
 		var env = this;
 		var tempArray = [];
 		if( Array.isArray( object ) ) {
@@ -116,7 +116,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Boolean} - Whether or not the array has this value.
 	 */
-	hasProperty( target, source ) {
+	static hasProperty( target, source ) {
 		if( Array.isArray( target ) ) {
 			if( Array.isArray( source ) ) {
 				var length = source.length;
@@ -142,7 +142,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Array} - deduplicated array.
 	 */
-	deduplicate( array, idOffset ) {
+	static deduplicate( array, idOffset ) {
 		var env = this;
 		return env.objectToArray( env.arrayToObject( array, idOffset ) );
  	}
@@ -165,7 +165,7 @@ export default class NSLHelper {
  	 *
  	 * @return {String} - URL of the script (or an empty string if the script does not exist).
  	 */
-	getScriptLocation( name ) {
+	static getScriptLocation( name ) {
 		var scripts = document.getElementsByTagName( 'script' );
 		for( var i in scripts ) {
 			if( scripts[i].src && scripts[i].src.endsWith( name + '.js' ) ) {
@@ -183,7 +183,7 @@ export default class NSLHelper {
  	 *
  	 * @return {Array} - array that contains only properties in the filter array.
  	 */
-	capitalize( string, type ) {
+	static capitalize( string, type ) {
 		if( typeof type === 'undefined' || type === 'first' ) {
 			return string.charAt( 0 ).toUpperCase() + string.slice( 1 );
 		} else if( type === 'camel' ) {
@@ -207,7 +207,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Array} - array that contains only properties in the filter array.
 	 */
-	filterArray( filtered, filter ) {
+	static filterArray( filtered, filter ) {
 		return filtered.filter( function( e ) {
 			return filter.indexOf( e ) < 0;
 		});
@@ -221,7 +221,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Object} - object that contains only properties in the filter array.
 	 */
-	filterObject( object, properties ) {
+	static filterObject( object, properties ) {
 		var tempObject = NSLAbstract.deepCopy( object );
 		Object.getOwnPropertyNames( tempObject ).forEach( function( e ) {
 			if( !NSLAbstract.hasProperty( properties, e ) ) {
@@ -238,7 +238,7 @@ export default class NSLHelper {
 	 *
 	 * @return {String} - Formatted number.
 	 */
-	numberWithCommas( x ) {
+	static numberWithCommas( x ) {
 		var parts = x.toString().split( '.' );
 		parts[0] = parts[0].replace( /\B(?=(\d{3})+(?!\d) )/g, ',' );
 		return parts.join( '.' );
@@ -251,7 +251,7 @@ export default class NSLHelper {
 	 *
 	 * @return {Boolean} - True if the object is empty, false otherwise.
 	 */
-	isEmpty( object ) {
+	static isEmpty( object ) {
 		if( Array.isArray( object ) ) {
 			if( object.length === 0 ) {
 				return true;
@@ -269,6 +269,39 @@ export default class NSLHelper {
 				return true;
 			}
 		}
+	}
+
+	static randomString( parameters ) {
+		parameters = this.parametersExtractor( parameters );
+		if( typeof parameters.length !== 'number' ) {
+			parameters.length = 48;
+		}
+		if( typeof parameters.characters !== 'string' ) {
+			parameters.characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+		}
+		if( typeof parameters.string !== 'string' ) {
+			parameters.string = '';
+		}
+		return this.randomStringRecursive( parameters );
+	}
+
+	static randomStringRecursive( parameters ) {
+		parameters = this.parametersExtractor( parameters );
+		if( typeof parameters.string === 'undefined' && parameters.characters.length === 62 ) {
+			parameters.string = parameters.characters.substr( Math.floor( Math.random() * 52 ), 1 );
+		} else {
+			parameters.string += parameters.characters.substr( Math.floor( Math.random() * parameters.characters.length ), 1 );
+		}
+		if( parameters.length > 0 ) {
+			parameters.length -= 1;
+			return this.randomStringRecursive( parameters );
+		} else {
+			return parameters.string;
+		}
+	}
+
+	static parametersExtractor( parameters ) {
+		return ( ( typeof parameters === 'undefined' ) ? {} : parameters );
 	}
 
 }

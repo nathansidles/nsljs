@@ -11,10 +11,11 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
 
 	constructor( object ) {
 		super( object );
+		this['$node'];
+		this['$listeners'] = {};
 		if( typeof object !== 'undefined' ) {
 			this['$node'] = this.nodeExtractor( object.node );
 		}
-		this['$listeners'] = {};
 	}
 
 	/**
@@ -225,13 +226,13 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
 	 * @param {String} event - event to notify subscribers about.
 	 */
 	notifySubscribers( event ) {
-		var env = this;
-		Object.getOwnPropertyNames( env['$subscribers'] ).forEach( function( e ) {
-			for( var i = 0, length = env['$subscribers'][e].length; i < length; i++ ) {
-				if( typeof env['$subscribers'][e][i].getNotification === 'function' ) {
-					env['$subscribers'][e][i].getNotification( env, event );
-				}
-			}
+		var parameters = {}
+		parameters.publisher = this
+		parameters.event = event;
+		Object.getOwnPropertyNames( parameters.publisher['$subscribers'] ).forEach( function( e ) {
+			Object.getOwnPropertyNames( parameters.publisher['$subscribers'][e] ).forEach( function( f ) {
+				parameters.publisher['$subscribers'][e][f].onNotification( parameters );
+			});
 		});
 	}
 

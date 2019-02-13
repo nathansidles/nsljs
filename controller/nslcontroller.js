@@ -12,8 +12,9 @@ export default class NSLController extends NSLControllerAbstract {
 		super( parameters );
 	}
 
-	new() {
-		return new NSLController();
+	new( parameters ) {
+		parameters = NSLHelper.parametersExtractor( parameters );
+		return new NSLController( parameters );
 	}
 
 	get dom() {

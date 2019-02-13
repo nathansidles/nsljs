@@ -7,18 +7,25 @@ import NSLViewDOMElement from './../nslviewdomelement.js';
 
 export default class NSLViewDOMElementButton extends NSLViewDOMElementButtonAbstract {
 
-	constructor( object ) {
-		super( object );
+	constructor( parameters ) {
+		super( parameters );
 	}
 
-	new( object ) {
-		if( typeof object === 'undefined' ) {
-			object = {};
+	new( parameters ) {
+
+		if( typeof parameters === 'undefined' ) {
+			parameters = {};
+		}
+		if( typeof parameters.appendee === 'undefined' ) {
+			parameters.appendee = this['$node'].parentNode;
+		}
+		if( typeof parameters.content === 'undefined' ) {
+			parameters.content = this.content['$node'].textContent;
 		}
 		var env = this;
-		var temp = new NSLViewDOMElementButton( object );
+		var temp = new NSLViewDOMElementButton( parameters );
 		Object.getOwnPropertyNames( env ).forEach( function( e ) {
-			if( e !== '$node' && e !== '$listeners' ) {
+			if( e !== '$node' && e !== '$listeners' && e !== '$subscribers' && e !== '$publishers'  && e !== '$id' && e !== 'content' ) {
 				temp[e] = env[e];
 			}
 		});
@@ -27,9 +34,17 @@ export default class NSLViewDOMElementButton extends NSLViewDOMElementButtonAbst
 				temp.addEventListener( e, env['$listeners'][e][f] );
 			});
 		});
-		for( var i = 0; i < env['$publishers'].length; i++ ) {
-			env['$publishers'][i].addSubscriber( temp );
-		}
+		Object.getOwnPropertyNames( env['$publishers'] ).forEach( function( e ) {
+			Object.getOwnPropertyNames( env['$publishers'][e] ).forEach( function( f ) {
+				env['$publishers'][e][f].addSubscriber( temp );
+			});
+		});
+		Object.getOwnPropertyNames( env['$subscribers'] ).forEach( function( e ) {
+			Object.getOwnPropertyNames( env['$subscribers'][e] ).forEach( function( f ) {
+				env['$subscribers'][e][f].addPublisher( temp );
+			});
+		});
+
 		return temp;
 	}
 

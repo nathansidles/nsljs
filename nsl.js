@@ -10,12 +10,13 @@ import NSLView from './view/nslview.js';
 
 export default class NSL extends NSLAbstract {
 
-	constructor() {
-
+	constructor( parameters ) {
+		super( parameters );
 	}
 
-	new() {
-		return new NSL();
+	new( parameters ) {
+		parameters = NSLHelper.parametersExtractor( parameters );
+		return new NSL( parameters );
 	}
 
 	static get controller() {
