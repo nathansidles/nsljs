@@ -12,9 +12,9 @@ export default class NSLHelper {
    *
    * @return {Object} - Array-sourced object.
    */
-  static arrayToObject(array, offset ) {
+  static arrayToObject( array, offset ) {
     var temp = {};
-    for ( var i = 0; i < array.length; i++ ) {
+    for ( let i = 0; i < array.length; i++ ) {
       if ( typeof array[i] === 'object' ) {
         temp[array[i][offset]] = array[i];
       } else if ( typeof array[i] === 'string' || typeof array[i] === 'number' ) {
@@ -48,7 +48,7 @@ export default class NSLHelper {
    * @return {Number} - Column offset.
    */
   static getColumnIndex( metadata, columnName ) {
-    for ( var i = 0; i < metadata.length; i++ ) {
+    for ( let i = 0; i < metadata.length; i++ ) {
       if ( metadata[i] == columnName ) {
         return i;
       }
@@ -67,7 +67,7 @@ export default class NSLHelper {
    * @return {Array} - set of related IDs, including the original IDs.
    */
   static getRelatedIds( id, idOffset, relativeOffset, object ) {
-    var env = this;
+    let env = this;
     var tempArray = [ String( id ) ];
     tempArray = tempArray.concat( env.getRelatedIdsRecursive( id, idOffset, relativeOffset, env.deepCopy( object ) ) );
     var tempObject = env.arrayToObject( tempArray, 0 );
@@ -86,10 +86,10 @@ export default class NSLHelper {
    * @return {Array} - set of related IDs, including the original IDs.
    */
   static getRelatedIdsRecursive( id, idOffset, relativeOffset, object ) {
-    var env = this;
+    let env = this;
     var tempArray = [];
     if ( Array.isArray( object ) ) {
-      for ( var i = 0; i < object.length; i++ ) {
+      for ( let i = 0; i < object.length; i++ ) {
         if ( object[i][idOffset] == id && id != 0 && object[i][relativeOffset] != 0 ) {
           var tempId = object[i][relativeOffset];
           tempArray = tempArray.concat( object[i][relativeOffset] );
@@ -120,7 +120,7 @@ export default class NSLHelper {
     if ( Array.isArray( target ) ) {
       if ( Array.isArray( source ) ) {
         var length = source.length;
-        for ( var i = 0; i < length; i++ ) {
+        for ( let i = 0; i < length; i++ ) {
           if ( target.indexOf( source[i] ) > -1 ) {
             return true;
           }
@@ -143,7 +143,7 @@ export default class NSLHelper {
    * @return {Array} - deduplicated array.
    */
   static deduplicate( array, idOffset ) {
-    var env = this;
+    let env = this;
     return env.objectToArray( env.arrayToObject( array, idOffset ) );
    }
 
@@ -188,7 +188,7 @@ export default class NSLHelper {
       return string.charAt( 0 ).toUpperCase() + string.slice( 1 );
     } else if ( type === 'camel' ) {
       string = string.split( ' ' );
-      for ( var i = 0; i < string.length; i++) {
+      for ( let i = 0; i < string.length; i++) {
         string[i] = string[i][0].toUpperCase() + string[i].substr( 1 );
       }
       return string.join( ' ' );

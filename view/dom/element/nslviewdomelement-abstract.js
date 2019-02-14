@@ -70,8 +70,8 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
 
     var inputs = this.classInputsIdentifier( elements, testClasses );
 
-    for ( var i = 0; i < inputs.elements.length; i++ ) {
-      for ( var j = 0; j < inputs.testClasses.length; j++ ) {
+    for ( let i = 0; i < inputs.elements.length; i++ ) {
+      for ( let j = 0; j < inputs.testClasses.length; j++ ) {
         if ( ( ' ' + inputs.elements[i].className + ' ' ).indexOf( ' ' + inputs.testClasses[j] + ' ' ) > -1 ) {
           return true;
         }
@@ -91,8 +91,8 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
 
     var inputs = this.classInputsIdentifier( elements, testClasses );
 
-    for ( var i = 0; i < inputs.elements.length; i++ ) {
-      for ( var j = 0; j < inputs.testClasses.length; j++ ) {
+    for ( let i = 0; i < inputs.elements.length; i++ ) {
+      for ( let j = 0; j < inputs.testClasses.length; j++ ) {
         inputs.elements[i].classList.add( inputs.testClasses[j] );
       }
     }
@@ -108,8 +108,8 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
 
     var inputs = this.classInputsIdentifier( elements, testClasses );
 
-    for ( var i = 0; i < inputs.elements.length; i++ ) {
-      for ( var j = 0; j < inputs.testClasses.length; j++ ) {
+    for ( let i = 0; i < inputs.elements.length; i++ ) {
+      for ( let j = 0; j < inputs.testClasses.length; j++ ) {
         inputs.elements[i].classList.remove( inputs.testClasses[j] );
       }
     }
@@ -182,7 +182,7 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
     tempReturn.testClasses = [];
 
     if ( Array.isArray( elements ) ) {
-      for ( var i = 0; i < elements.length; i++ ) {
+      for ( let i = 0; i < elements.length; i++ ) {
         var tempElement = this.nodeExtractor( elements[i] );
         if ( typeof tempElement !== 'undefined' ) {
           tempReturn.elements.push( tempElement );
@@ -201,7 +201,7 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
     }
 
     if ( Array.isArray( testClasses ) ) {
-      for ( var i = 0; i < testClasses.length; i++ ) {
+      for ( let i = 0; i < testClasses.length; i++ ) {
         if ( typeof testClasses[i] === 'string' ) {
           tempReturn.testClasses.push( testClasses[i] );
         }

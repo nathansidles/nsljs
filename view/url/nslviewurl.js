@@ -13,7 +13,7 @@ export default class NSLViewURL {
   }
 
   getURL( url ) {
-    var env = this;
+    let env = this;
 
     if ( typeof url === 'undefined' ) {
       url = env.deepCopy( window.location );
@@ -31,14 +31,14 @@ export default class NSLViewURL {
 
     var parameters = {};
     var pairs = ( url.search[0] === '?' ? url.search.substr( 1 ) : url.search ).split( '&' );
-    for ( var i = 0; i < pairs.length; i++ ) {
+    for ( let i = 0; i < pairs.length; i++ ) {
       var pair = pairs[i].split( '=' );
       var key = decodeURIComponent( pair[0] ).replace( '[]', '' );
       if ( typeof parameters[key] === 'undefined' ) {
         parameters[key] = [];
       }
       var values = decodeURIComponent( pair[1] || '' ).split( ',' );
-      for ( var j = 0; j < values.length; j++ ) {
+      for ( let j = 0; j < values.length; j++ ) {
         if ( !NSL.hasElement( parameters[key], values[j] ) ) {
           parameters[key].push( values[j] );
         }

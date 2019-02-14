@@ -167,7 +167,7 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
    * @param {Object} inputFunction - function to execute in response to event.
    */
   addEventListener( event, inputFunction, parameters ) {
-    var env = this;
+    let env = this;
     this['$node'].addEventListener( event, function() { env.notifySubscribers( event ); } );
     if ( typeof this['$listeners'][event] === 'undefined' ) {
       this['$listeners'][event] = {};
@@ -229,9 +229,9 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
     var parameters = {};
     parameters.publisher = this;
     parameters.event = event;
-    Object.getOwnPropertyNames( parameters.publisher['$subscribers'] ).forEach( function( e ) {
-      Object.getOwnPropertyNames( parameters.publisher['$subscribers'][e] ).forEach( function( f ) {
-        parameters.publisher['$subscribers'][e][f].subscriber.onNotification( parameters );
+    Object.getOwnPropertyNames( parameters.publisher['$subs'] ).forEach( function( e ) {
+      Object.getOwnPropertyNames( parameters.publisher['$subs'][e] ).forEach( function( f ) {
+        parameters.publisher['$subs'][e][f].subscriber.onNotification( parameters );
       });
     });
   }

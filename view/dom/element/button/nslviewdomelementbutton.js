@@ -22,10 +22,10 @@ export default class NSLViewDOMElementButton extends NSLViewDOMElementButtonAbst
     if ( typeof parameters.content === 'undefined' ) {
       parameters.content = this.content['$node'].textContent;
     }
-    var env = this;
+    let env = this;
     var temp = new NSLViewDOMElementButton( parameters );
     Object.getOwnPropertyNames( env ).forEach( function( e ) {
-      if ( e !== '$node' && e !== '$listeners' && e !== '$subscribers' && e !== '$publishers'  && e !== '$id' && e !== 'content' ) {
+      if ( e !== '$node' && e !== '$listeners' && e !== '$subs' && e !== '$pubs'  && e !== '$id' && e !== 'content' ) {
         temp[e] = env[e];
       }
     });
@@ -34,14 +34,14 @@ export default class NSLViewDOMElementButton extends NSLViewDOMElementButtonAbst
         temp.addEventListener( e, env['$listeners'][e][f] );
       });
     });
-    Object.getOwnPropertyNames( env['$publishers'] ).forEach( function( e ) {
-      Object.getOwnPropertyNames( env['$publishers'][e] ).forEach( function( f ) {
-        env['$publishers'][e][f].publisher.addSubscriber( temp );
+    Object.getOwnPropertyNames( env['$pubs'] ).forEach( function( e ) {
+      Object.getOwnPropertyNames( env['$pubs'][e] ).forEach( function( f ) {
+        env['$pubs'][e][f].publisher.addSubscriber( temp );
       });
     });
-    Object.getOwnPropertyNames( env['$subscribers'] ).forEach( function( e ) {
-      Object.getOwnPropertyNames( env['$subscribers'][e] ).forEach( function( f ) {
-        env['$subscribers'][e][f].subscriber.addPublisher( temp, { 'events' : env['$subscribers'][e][f].subscriber['$publishers']['$views'][env.id].events } );
+    Object.getOwnPropertyNames( env['$subs'] ).forEach( function( e ) {
+      Object.getOwnPropertyNames( env['$subs'][e] ).forEach( function( f ) {
+        env['$subs'][e][f].subscriber.addPublisher( temp, { 'events' : env['$subs'][e][f].subscriber['$pubs']['$views'][env.id].events } );
       });
     });
 

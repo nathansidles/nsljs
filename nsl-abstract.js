@@ -11,14 +11,14 @@ export default class NSLAbstract {
     Object.defineProperty( this, '$id', {
       value: NSLHelper.randomString(),
     });
-    this['$publishers'] = {};
-    this['$publishers']['$controllers'] = {};
-    this['$publishers']['$models'] = {};
-    this['$publishers']['$views'] = {};
-    this['$subscribers'] = {};
-    this['$subscribers']['$controllers'] = {};
-    this['$subscribers']['$models'] = {};
-    this['$subscribers']['$views'] = {};
+    this['$pubs'] = {};
+    this['$pubs']['$controllers'] = {};
+    this['$pubs']['$models'] = {};
+    this['$pubs']['$views'] = {};
+    this['$subs'] = {};
+    this['$subs']['$controllers'] = {};
+    this['$subs']['$models'] = {};
+    this['$subs']['$views'] = {};
   }
 
   get id() {
@@ -36,36 +36,36 @@ export default class NSLAbstract {
 
   addSubscriberBasic( subscriber ) {
     if ( subscriber.constructor.name.lastIndexOf( 'NSLController', 0 ) === 0 ) {
-      this['$subscribers']['$controllers'][subscriber.id] = {};
-      this['$subscribers']['$controllers'][subscriber.id].subscriber = subscriber;
+      this['$subs']['$controllers'][subscriber.id] = {};
+      this['$subs']['$controllers'][subscriber.id].subscriber = subscriber;
     } else if ( subscriber.constructor.name.lastIndexOf( 'NSLModel', 0 ) === 0 ) {
-      this['$subscribers']['$models'][subscriber.id] = {};
-      this['$subscribers']['$models'][subscriber.id].subscriber = subscriber;
+      this['$subs']['$models'][subscriber.id] = {};
+      this['$subs']['$models'][subscriber.id].subscriber = subscriber;
     } else if ( subscriber.constructor.name.lastIndexOf( 'NSLView', 0 ) === 0 ) {
-      this['$subscribers']['$views'][subscriber.id] = {};
-      this['$subscribers']['$views'][subscriber.id].subscriber = subscriber;
+      this['$subs']['$views'][subscriber.id] = {};
+      this['$subs']['$views'][subscriber.id].subscriber = subscriber;
     }
   }
 
   removeSubscriber( subscriber ) {
-    var env = this;
-    Object.getOwnPropertyNames( env['$subscribers'] ).forEach( function( e ) {
-      delete env['$subscribers'][e][subscriber.id];
+    let env = this;
+    Object.getOwnPropertyNames( env['$subs'] ).forEach( function( e ) {
+      delete env['$subs'][e][subscriber.id];
     });
     subscriber.removePublisher( this );
   }
 
   removeSubscribers() {
-    this['$subscribers']['$controllers'] = {};
-    this['$subscribers']['$models'] = {};
-    this['$subscribers']['$views'] = {};
+    this['$subs']['$controllers'] = {};
+    this['$subs']['$models'] = {};
+    this['$subs']['$views'] = {};
   }
 
   notifySubscribers() {
-    var env = this;
-    Object.getOwnPropertyNames( env['$subscribers'] ).forEach( function( e ) {
-      Object.getOwnPropertyNames( env['$subscribers'][e] ).forEach( function( f ) {
-        env['$subscribers'][e][f].onNotification( env );
+    let env = this;
+    Object.getOwnPropertyNames( env['$subs'] ).forEach( function( e ) {
+      Object.getOwnPropertyNames( env['$subs'][e] ).forEach( function( f ) {
+        env['$subs'][e][f].onNotification( env );
       });
     });
   }
@@ -80,38 +80,38 @@ export default class NSLAbstract {
   }
 
   addPublisherBasic( publisher, parameters ) {
-    var env = this;
+    let env = this;
     if ( publisher.constructor.name.lastIndexOf( 'NSLController', 0 ) === 0 ) {
-      env['$publishers']['$controllers'][publisher.id] = {};
-      env['$publishers']['$controllers'][publisher.id].publisher = publisher;
+      env['$pubs']['$controllers'][publisher.id] = {};
+      env['$pubs']['$controllers'][publisher.id].publisher = publisher;
       if ( typeof parameters !== 'undefined' ) {
         Object.getOwnPropertyNames( parameters ).forEach( function( e ) {
-          env['$publishers']['$controllers'][publisher.id][e] = parameters[e];
+          env['$pubs']['$controllers'][publisher.id][e] = parameters[e];
         });
       }
     } else if ( publisher.constructor.name.lastIndexOf( 'NSLModel', 0 ) === 0 ) {
-      env['$publishers']['$models'][publisher.id] = {};
-      env['$publishers']['$models'][publisher.id].publisher = publisher;
+      env['$pubs']['$models'][publisher.id] = {};
+      env['$pubs']['$models'][publisher.id].publisher = publisher;
       if ( typeof parameters !== 'undefined' ) {
         Object.getOwnPropertyNames( parameters ).forEach( function( e ) {
-          env['$publishers']['$models'][publisher.id][e] = parameters[e];
+          env['$pubs']['$models'][publisher.id][e] = parameters[e];
         });
       }
     } else if ( publisher.constructor.name.lastIndexOf( 'NSLView', 0 ) === 0 ) {
-      env['$publishers']['$views'][publisher.id] = {};
-      env['$publishers']['$views'][publisher.id].publisher = publisher;
+      env['$pubs']['$views'][publisher.id] = {};
+      env['$pubs']['$views'][publisher.id].publisher = publisher;
       if ( typeof parameters !== 'undefined' ) {
         Object.getOwnPropertyNames( parameters ).forEach( function( e ) {
-          env['$publishers']['$views'][publisher.id][e] = parameters[e];
+          env['$pubs']['$views'][publisher.id][e] = parameters[e];
         });
       }
     }
   }
 
   removePublisher( publisher ) {
-    var env = this;
-    Object.getOwnPropertyNames( env['$publishers'] ).forEach( function( e ) {
-      delete env['$publishers'][e][publisher.id];
+    let env = this;
+    Object.getOwnPropertyNames( env['$pubs'] ).forEach( function( e ) {
+      delete env['$pubs'][e][publisher.id];
     });;
   }
 
