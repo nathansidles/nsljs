@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 import NSLModelAbstract from './../nslmodel-abstract.js';
 
@@ -7,8 +7,8 @@ import NSLModelAbstract from './../nslmodel-abstract.js';
  */
 export default class NSLModelDOMAbstract extends NSLModelAbstract {
 
-	constructor( actions, models, views ) {
-		super();
-	}
+  constructor( actions, models, views ) {
+    super();
+  }
 
 }

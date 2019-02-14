@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
 import NSLHelper from '/nsljs/helper/nslhelper.js';
 
 export default class NSLViewTitle {
 
-	constructor( baseTitle ) {
+  constructor( baseTitle ) {
 
-	}
+  }
 
-	new( baseTitle ) {
-		return new NSLViewTitle( baseeTitle );
-	}
+  new( baseTitle ) {
+    return new NSLViewTitle( baseeTitle );
+  }
 
 }

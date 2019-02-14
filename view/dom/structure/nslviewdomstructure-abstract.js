@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 import NSLViewDOMAbstract from './../nslviewdom-abstract.js';
 import NSLViewDOMElement from './../element/nslviewdomelement.js';
@@ -8,10 +8,10 @@ import NSLViewDOMElement from './../element/nslviewdomelement.js';
  */
 export default class NSLViewDOMStructureAbstract extends NSLViewDOMAbstract {
 
-	constructor( object ) {
-		super( object );
-		if( typeof object !== 'undefined' ) {
-		}
-	}
+  constructor( object ) {
+    super( object );
+    if ( typeof object !== 'undefined' ) {
+    }
+  }
 
 }

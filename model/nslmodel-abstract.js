@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 import NSLAbstract from './../nsl-abstract.js';
 
@@ -7,17 +7,17 @@ import NSLAbstract from './../nsl-abstract.js';
  */
 export default class NSLModelAbstract extends NSLAbstract {
 
-	constructor( data ) {
-		super();
-		this.data = data;
-	}
+  constructor( data ) {
+    super();
+    this.data = data;
+  }
 
-	getData() {
-		return this.data;
-	}
+  getData() {
+    return this.data;
+  }
 
-	setData( data ) {
-		this.data = data;
-	}
+  setData( data ) {
+    this.data = data;
+  }
 
 }

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 import NSLHelper from '/nsljs/helper/nslhelper.js';
 
@@ -9,8 +9,8 @@ import NSLControllerAbstract from './../nslcontroller-abstract.js';
  */
 export default class NSLControllerDOMAbstract extends NSLControllerAbstract {
 
-	constructor( parameters ) {
-		super( parameters );
-	}
+  constructor( parameters ) {
+    super( parameters );
+  }
 
 }
