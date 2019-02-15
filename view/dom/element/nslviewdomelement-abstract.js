@@ -176,14 +176,14 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
    */
   classInputsIdentifier( elements, testClasses ) {
 
-    var tempReturn = {};
+    const tempReturn = {};
 
     tempReturn.elements = [];
     tempReturn.testClasses = [];
 
     if ( Array.isArray( elements ) ) {
       for ( let i = 0; i < elements.length; i++ ) {
-        var tempElement = this.nodeExtractor( elements[i] );
+        const tempElement = this.nodeExtractor( elements[i] );
         if ( typeof tempElement !== 'undefined' ) {
           tempReturn.elements.push( tempElement );
         } else if ( typeof element[i] === 'string' ) {

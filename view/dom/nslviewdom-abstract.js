@@ -168,9 +168,9 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
    */
   addEventListener( event, inputFunction, parameters ) {
     let env = this;
-    this['$node'].addEventListener( event, function() { env.notifySubscribers( event ); } );
     if ( typeof this['$listeners'][event] === 'undefined' ) {
       this['$listeners'][event] = {};
+      this['$node'].addEventListener( event, function() { env.notifySubscribers( event ); } );
     }
     this['$listeners'][event][inputFunction] = inputFunction;
   }
