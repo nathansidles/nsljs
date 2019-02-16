@@ -12,7 +12,7 @@ import NSLControllerViewEventAction from './nslcontroller-vieweventaction.js';
  */
 export default class NSLControllerAbstract extends NSLAbstract {
   /**
-   * Create an NSLControllerAbstract object.
+   * Function for creating an NSLControllerAbstract object.
    *
    * @param {Object} parameters - Parameters for creating the object. Properties:
    *    controllers: Array of NSLController publishers to which this object subscribes. Optional.
@@ -44,7 +44,7 @@ export default class NSLControllerAbstract extends NSLAbstract {
   }
 
   /**
-   * Function for adding a view, event, and action (or sets of any of those) to this controller,
+   * Function for adding a view, event, and action (or sets of any of those) to this controller.
    *    Accepts as a parameter a view or views to which to subscribe, events for which to listen, and actions to take for those
    *    events.
    *
@@ -144,6 +144,11 @@ export default class NSLControllerAbstract extends NSLAbstract {
     }
   }
 
+  /**
+   * Function for adding a view publisher to this controller. Helper function for addView().
+   *
+   * @param {Object} view - The view to add to this controller.
+   */
   addViewView( view ) {
     if ( view.constructor.name.lastIndexOf( 'NSLView', 0 ) === 0 ) {
       if ( typeof this['$pubs']['$views'][view.id] === 'undefined' ) {
@@ -153,17 +158,31 @@ export default class NSLControllerAbstract extends NSLAbstract {
     }
   }
 
+  /**
+   * Function for adding an event to this controller's view publisher. Helper function for addView().
+   *
+   * @param {Object} view - The view to associate with this event.
+   * @param {Object} event - The event to associate with this view.
+   */
   addViewViewEvent( view, event ) {
     this['$pubs']['$views'][view.id].events[event] = {};
     view.addEventListener( event );
   }
 
+  /**
+   * Function for adding an action to this event to this controller's view publisher. Helper function for addView().
+   *
+   * @param {Object} view - The view to associate with this action.
+   * @param {Object} event - The event to associate with this action.
+   * @param {Object} action - The action to associate with this view's event.
+   *
+   */
   addViewViewEventAction( view, event, action ) {
     this['$pubs']['$views'][view.id].events[event][action] = action;
   }
 
   /**
-   * Function for removing a view, event, and action (or sets of any of those) to this controller,
+   * Function for removing a view, event, and action (or sets of any of those) to this controller.
    *    Accepts as a parameter a view or views to which to remove subscribtion, events for which
    *    to stop listening, and actions to stop taking for those events.
    *
@@ -265,22 +284,59 @@ export default class NSLControllerAbstract extends NSLAbstract {
     }
   }
 
+  /**
+   * Function for removing a view publisher from this controller. Helper function for removeView().
+   *
+   * @param {Object} view - The view to remove from this controller.
+   */
   removeViewView( view ) {
     delete this['$pubs']['$views'][view.id];
   }
 
+  /**
+   * Function for removing an event from this controller's view publisher. Helper function for removeView().
+   *
+   * @param {Object} view - The view to no longer associate with this event.
+   * @param {Object} event - The event to no longer associate with this view.
+   */
   removeViewEvent( view, event ) {
     delete this['$pubs']['$views'][view.id][event];
   }
 
+  /**
+   * Function for removing an action from this event to this controller's view publisher. Helper function for removeView().
+   *
+   * @param {Object} view - The view to no longer associate with this action.
+   * @param {Object} event - The event to no longer associate with this action.
+   * @param {Object} action - The action to no longer associate with this view's event.
+   *
+   */
   removeViewEventAction( view, event, action ) {
     delete this['$pubs']['$views'][view.id][event][action];
   }
 
+  /**
+   * Function for responding to view (or controller, or model) event notifications.
+   *    Accepts as a parameter (at a minimum) the calling object and event.
+   *
+   * @param {Object} parameters - Parameters for adding to the view. Properties:
+   *    publisher: publisher (usually a view) notifying the controller of an event.
+   *    event:     event that has triggered the notification.
+   */
   onNotification( parameters ) {
     const env = this;
-    Object.getOwnPropertyNames( env['$pubs']['$views'][parameters.publisher.id].events[parameters.event] ).forEach( function( e ) {
-      env['$pubs']['$views'][parameters.publisher.id].events[parameters.event][e]( parameters );
-    });
+    if ( parameters.publisher.constructor.name.lastIndexOf( 'NSLController', 0 ) === 0 ) {
+      Object.getOwnPropertyNames( env['$pubs']['$controllers'][parameters.publisher.id].events[parameters.event] ).forEach( function( e ) {
+        env['$pubs']['$controllers'][parameters.publisher.id].events[parameters.event][e]( parameters );
+      });
+    } else if ( parameters.publisher.constructor.name.lastIndexOf( 'NSLModel', 0 ) === 0 ) {
+      Object.getOwnPropertyNames( env['$pubs']['$models'][parameters.publisher.id].events[parameters.event] ).forEach( function( e ) {
+        env['$pubs']['$models'][parameters.publisher.id].events[parameters.event][e]( parameters );
+      });
+    } else if ( parameters.publisher.constructor.name.lastIndexOf( 'NSLView', 0 ) === 0 ) {
+      Object.getOwnPropertyNames( env['$pubs']['$views'][parameters.publisher.id].events[parameters.event] ).forEach( function( e ) {
+        env['$pubs']['$views'][parameters.publisher.id].events[parameters.event][e]( parameters );
+      });
+    }
   }
 }

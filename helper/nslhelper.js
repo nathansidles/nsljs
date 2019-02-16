@@ -1,19 +1,20 @@
 'use strict';
 
+/**
+ * Class for NSLHelper objects. NSLHelper objects contain useful JavaScript functions with general utility.
+ *    This class is not intended for instantiation.
+ */
 export default class NSLHelper {
-
-  constructor() {}
-
   /**
    * Function for transforming one- and two-dimensional arrays into objects, with a row's value at the offset serving as key.
    *
-   * @param {Array} - Array to transform.
-   * @param {Number} - Offset of key values.
+   * @param {Array} array - Array to transform.
+   * @param {Number} offset - Offset of key values.
    *
    * @return {Object} - Array-sourced object.
    */
   static arrayToObject( array, offset ) {
-    var temp = {};
+    const temp = {};
     for ( let i = 0; i < array.length; i++ ) {
       if ( typeof array[i] === 'object' ) {
         temp[array[i][offset]] = array[i];
@@ -27,12 +28,12 @@ export default class NSLHelper {
   /**
    * Function for transforming objects into arrays, with all own properties being turned into array values.
    *
-   * @param {Object} - Object to transform.
+   * @param {Object} object - Object to transform.
    *
    * @return {Array} - Object-sourced array.
    */
   static objectToArray( object ) {
-    var temp = [];
+    const temp = [];
     Object.getOwnPropertyNames( object ).forEach( function( e ) {
       temp.push( object[e] );
     });
@@ -67,10 +68,10 @@ export default class NSLHelper {
    * @return {Array} - set of related IDs, including the original IDs.
    */
   static getRelatedIds( id, idOffset, relativeOffset, object ) {
-    let env = this;
-    var tempArray = [ String( id ) ];
+    const env = this;
+    const tempArray = [String( id )];
     tempArray = tempArray.concat( env.getRelatedIdsRecursive( id, idOffset, relativeOffset, env.deepCopy( object ) ) );
-    var tempObject = env.arrayToObject( tempArray, 0 );
+    const tempObject = env.arrayToObject( tempArray, 0 );
     tempArray = env.objectToArray( tempObject );
     return tempArray;
   }
@@ -86,12 +87,12 @@ export default class NSLHelper {
    * @return {Array} - set of related IDs, including the original IDs.
    */
   static getRelatedIdsRecursive( id, idOffset, relativeOffset, object ) {
-    let env = this;
-    var tempArray = [];
+    const env = this;
+    const tempArray = [];
     if ( Array.isArray( object ) ) {
       for ( let i = 0; i < object.length; i++ ) {
         if ( object[i][idOffset] == id && id != 0 && object[i][relativeOffset] != 0 ) {
-          var tempId = object[i][relativeOffset];
+          const tempId = object[i][relativeOffset];
           tempArray = tempArray.concat( object[i][relativeOffset] );
           tempArray = tempArray.concat( env.getRelatedIds( tempId, idOffset, relativeOffset, object ) );
         }
@@ -99,7 +100,7 @@ export default class NSLHelper {
     } else {
       Object.getOwnPropertyNames( object ).forEach( function( e ) {
         if ( object[e][idOffset] == id && id != 0 && object[e][relativeOffset] != 0 ) {
-          var tempId = object[e][relativeOffset];
+          const tempId = object[e][relativeOffset];
           tempArray = tempArray.concat( object[e][relativeOffset] );
           tempArray = tempArray.concat( env.getRelatedIds( tempId, idOffset, relativeOffset, object ) );
         }
@@ -119,7 +120,7 @@ export default class NSLHelper {
   static hasProperty( target, source ) {
     if ( Array.isArray( target ) ) {
       if ( Array.isArray( source ) ) {
-        var length = source.length;
+        const length = source.length;
         for ( let i = 0; i < length; i++ ) {
           if ( target.indexOf( source[i] ) > -1 ) {
             return true;
@@ -132,7 +133,7 @@ export default class NSLHelper {
     } else {
       return false;
     }
-   }
+  }
 
   /**
    * Function for deduplicating a simple array.
@@ -143,31 +144,31 @@ export default class NSLHelper {
    * @return {Array} - deduplicated array.
    */
   static deduplicate( array, idOffset ) {
-    let env = this;
+    const env = this;
     return env.objectToArray( env.arrayToObject( array, idOffset ) );
-   }
+  }
 
   /**
-    * Function for making a deep copy of an object.
-    *
-    * @param {Object} object - Array or object which to copy deeply.
-    *
-    * @return {Object} - copied object.
-    */
+  * Function for making a deep copy of an object.
+  *
+  * @param {Object} object - Array or object which to copy deeply.
+  *
+  * @return {Object} - copied object.
+  */
   static deepCopy( object ) {
     return JSON.parse( JSON.stringify( object ) );
   }
 
   /**
-    * Function for getting the URL of a script with a given name.
-    *
-    * @param {String} name - name of the script (without appending ".js").
-    *
-    * @return {String} - URL of the script (or an empty string if the script does not exist).
-    */
+   * Function for getting the URL of a script with a given name.
+   *
+   * @param {String} name - name of the script (without appending ".js").
+   *
+   * @return {String} - URL of the script (or an empty string if the script does not exist).
+   */
   static getScriptLocation( name ) {
-    var scripts = document.getElementsByTagName( 'script' );
-    for ( var i in scripts ) {
+    const scripts = document.getElementsByTagName( 'script' );
+    for ( const i in scripts ) {
       if ( scripts[i].src && scripts[i].src.endsWith( name + '.js' ) ) {
         return scripts[i].src.replace( '/' + name + '.js', '' );
       }
@@ -176,13 +177,13 @@ export default class NSLHelper {
   }
 
   /**
-    * Function for capitalizing a string.
-    *
-    * @param {String} string - string to be capitalized.
+   * Function for capitalizing a string.
+   *
+   * @param {String} string - string to be capitalized.
    * @param {String} type - type of capitalization to perform. Values are 'first', 'camel', and 'all'.
-    *
-    * @return {Array} - array that contains only properties in the filter array.
-    */
+   *
+   * @return {Array} - array that contains only properties in the filter array.
+   */
   static capitalize( string, type ) {
     if ( typeof type === 'undefined' || type === 'first' ) {
       return string.charAt( 0 ).toUpperCase() + string.slice( 1 );
@@ -217,12 +218,12 @@ export default class NSLHelper {
    * Function for filtering an object against the elements of an array.
    *
    * @param {Object} object - object to be filtered.
-   * @param {Array} filter - array of property names to be included in the filtered object.
+   * @param {Array} properties - array of property names to be included in the filtered object.
    *
    * @return {Object} - object that contains only properties in the filter array.
    */
   static filterObject( object, properties ) {
-    var tempObject = NSLAbstract.deepCopy( object );
+    const tempObject = NSLAbstract.deepCopy( object );
     Object.getOwnPropertyNames( tempObject ).forEach( function( e ) {
       if ( !NSLAbstract.hasProperty( properties, e ) ) {
         delete tempObject[e];
@@ -239,7 +240,7 @@ export default class NSLHelper {
    * @return {String} - Formatted number.
    */
   static numberWithCommas( x ) {
-    var parts = x.toString().split( '.' );
+    const parts = x.toString().split( '.' );
     parts[0] = parts[0].replace( /\B(?=(\d{3})+(?!\d) )/g, ',' );
     return parts.join( '.' );
   }
@@ -260,7 +261,7 @@ export default class NSLHelper {
       }
     } else {
       if ( typeof object === 'object' ) {
-        var tempReturn = true;
+        const tempReturn = true;
         Object.getOwnPropertyNames( object ).forEach( function( e ) {
           tempReturn = false;
         });
@@ -271,6 +272,16 @@ export default class NSLHelper {
     }
   }
 
+  /**
+   * Function for generating a random string of characters.
+   *
+   * @param {Object} parameters - Parameters for this function. Properties:
+   *    length:     Length of random string to reach. Optional.
+   *    characters: Characters for random string to choose from. Optional.
+   *    string:     String for random characters to be appended to. Optional.
+   *
+   * @return {String} Random string of characters.
+   */
   static randomString( parameters ) {
     parameters = this.parametersExtractor( parameters );
     if ( typeof parameters.length !== 'number' ) {
@@ -285,6 +296,16 @@ export default class NSLHelper {
     return this.randomStringRecursive( parameters );
   }
 
+  /**
+   * Helper function for randomString().
+   *
+   * @param {Object} parameters - Parameters for this function. Properties:
+   *    length:     Length of random string to reach.
+   *    characters: Characters for random string to choose from.
+   *    string:     String for random characters to be appended to.
+   *
+   * @return {String} Random string of characters.
+   */
   static randomStringRecursive( parameters ) {
     parameters = this.parametersExtractor( parameters );
     if ( typeof parameters.string === 'undefined' && parameters.characters.length === 62 ) {
@@ -300,8 +321,15 @@ export default class NSLHelper {
     }
   }
 
+  /**
+   * Function for normalizing a possibly undefined object to an object.
+   *    Useful for functions that depend on a "parameters" object for their parameters.
+   *
+   * @param {Object} parameters - Parameters for this function. Optional.
+   *
+   * @return {Object} Parameters object (or property-less object).
+   */
   static parametersExtractor( parameters ) {
     return ( ( typeof parameters === 'undefined' ) ? {} : parameters );
   }
-
 }
