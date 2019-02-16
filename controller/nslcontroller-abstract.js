@@ -44,8 +44,8 @@ export default class NSLControllerAbstract extends NSLAbstract {
   }
 
   /**
-   * Function for creating adding a view or set of views, events, and actions to this controller,
-   *    Accepts as a parameter a view to which to subscribe, events for which to listen, and actions to take for those
+   * Function for adding a view, event, and action (or sets of any of those) to this controller,
+   *    Accepts as a parameter a view or views to which to subscribe, events for which to listen, and actions to take for those
    *    events.
    *
    * @param {Object} parameters - Parameters for adding to the view. Properties:
@@ -162,6 +162,19 @@ export default class NSLControllerAbstract extends NSLAbstract {
     this['$pubs']['$views'][view.id].events[event][action] = action;
   }
 
+  /**
+   * Function for removing a view, event, and action (or sets of any of those) to this controller,
+   *    Accepts as a parameter a view or views to which to remove subscribtion, events for which
+   *    to stop listening, and actions to stop taking for those events.
+   *
+   * @param {Object} parameters - Parameters for removing from the view. Properties:
+   *    view:   view or array of views to remove as publishers from this object. Optional.
+   *            If missing, all, all view publishers are removed.
+   *    event:  event or array of events for which to listen from the publisher. Optional.
+   *            If missing, no events or actions are associated with the publisher or performed by the controller.
+   *    action: action or array of actions to take in response to events from the publisher. Optional.
+   *            If missing, no actions are taken in response to events from the publisher.
+   */
   removeView( parameters ) {
     parameters = NSLHelper.parametersExtractor( parameters );
     if ( Array.isArray( parameters.view ) ) {
@@ -170,26 +183,27 @@ export default class NSLControllerAbstract extends NSLAbstract {
           for ( let j = 0; j < parameters.event.length; j++ ) {
             if ( Array.isArray( parameters.action ) ) {
               for ( let k = 0; k < parameters.action.length; k++ ) {
-
+                delete this['$pubs']['$views'][parameters.view[i].id].events[parameters.event[j]][parameters.action[k]];
               }
             } else if ( typeof action !== 'undefined' ) {
-
+              delete this['$pubs']['$views'][parameters.view[i].id].events[parameters.event[j]][parameters.action];
             } else {
-
+              this['$pubs']['$views'][parameters.views[i].id].events[parameters.event[j]] = {};
             }
           }
         } else if ( typeof event !== 'undefined' ) {
           if ( Array.isArray( parameters.action ) ) {
-            for ( let k = 0; K < parameters.action.length; k++ ) {
-
+            for ( let k = 0; k < parameters.action.length; k++ ) {
+              delete this['$pubs']['$views'][parameters.view[i].id].events[parameters.event][parameters.action[k]];
             }
           } else if ( typeof action !== 'undefined' ) {
-
+            delete this['$pubs']['$views'][parameters.view[i].id].events[parameters.event][parameters.action];
           } else {
-
+            this['$pubs']['$views'][parameters.view[i].id].events[parameters.event] = {};
           }
         } else {
-
+          this['$pubs']['$views'][parameters.view[i].id].events = {};
+          parameters.view[i].removeSubscriber( this );
         }
       }
     } else if ( parameters.view.constructor.name.lastIndexOf( 'NSLView', 0 ) === 0 ) {
@@ -197,27 +211,57 @@ export default class NSLControllerAbstract extends NSLAbstract {
         for ( let j = 0; j < parameters.event.length; j++ ) {
           if ( Array.isArray( parameters.action ) ) {
             for ( let k = 0; k < parameters.action.length; k++ ) {
-
+              delete this['$pubs']['$views'][parameters.view.id].events[parameters.event[j]][parameters.action[k]];
             }
           } else if ( typeof action !== 'undefined' ) {
-
+            delete this['$pubs']['$views'][parameters.view.id].events[parameters.event[j]][parameters.action];
           } else {
-
+            this['$pubs']['$views'][parameters.views.id].events[parameters.event[j]] = {};
           }
         }
       } else if ( typeof event !== 'undefined' ) {
         if ( Array.isArray( parameters.action ) ) {
-          for ( let k = 0; K < parameters.action.length; k++ ) {
-
+          for ( let k = 0; k < parameters.action.length; k++ ) {
+            delete this['$pubs']['$views'][parameters.view.id].events[parameters.event][parameters.action[k]];
           }
         } else if ( typeof action !== 'undefined' ) {
-
+          delete this['$pubs']['$views'][parameters.view.id].events[parameters.event][parameters.action];
         } else {
-
+          this['$pubs']['$views'][parameters.view.id].events[parameters.event] = {};
         }
       } else {
-
+        this['$pubs']['$views'][parameters.view.id].events = {};
+        parameters.view.removeSubscriber( this );
       }
+    } else if ( typeof parameters.view === 'undefined' ) {
+      const env = this;
+      Object.getOwnPropertyNames( env['$pubs']['$views'] ).forEach( function( e ) {
+        if ( Array.isArray( parameters.event ) ) {
+          for ( let j = 0; j < parameters.event.length; j++ ) {
+            if ( Array.isArray( parameters.action ) ) {
+              for ( let k = 0; k < parameters.action.length; k++ ) {
+                delete env['$pubs']['$views'][e].events[parameters.event[j]][parameters.action[k]];
+              }
+            } else if ( typeof action !== 'undefined' ) {
+              delete env['$pubs']['$views'][e].events[parameters.event[j]][parameters.action];
+            } else {
+              env['$pubs']['$views'][e].events[parameters.event[j]] = {};
+            }
+          }
+        } else if ( typeof event !== 'undefined' ) {
+          if ( Array.isArray( parameters.action ) ) {
+            for ( let k = 0; k < parameters.action.length; k++ ) {
+              delete env['$pubs']['$views'][e].events[parameters.event][parameters.action[k]];
+            }
+          } else if ( typeof action !== 'undefined' ) {
+            delete env['$pubs']['$views'][e].events[parameters.event][parameters.action];
+          } else {
+            env['$pubs']['$views'][e].events[parameters.event] = {};
+          }
+        } else {
+          env['$pubs']['$views'][e].removeSubscriber( env );
+        }
+      });
     }
   }
 
