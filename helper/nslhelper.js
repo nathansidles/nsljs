@@ -1,10 +1,24 @@
 'use strict';
 
+import NSLHelperAbstract from './nslhelper-abstract.js';
+
+import NSLHelperAJAX from './ajax/nslhelperajax.js';
+
 /**
- * Class for NSLHelper objects. NSLHelper objects contain useful JavaScript functions with general utility.
+ * Class for NSLHelper objects. NSLHelper objects contain useful JavaScript functions. They are not intended to be instantiated.
  *    This class is not intended for instantiation.
+ * @extends NSLHelperAbstract
  */
-export default class NSLHelper {
+export default class NSLHelper extends NSLHelperAbstract {
+  /**
+   * Function for accessing "dom" child objects of the NSLModel class. Not intended for use as a constructor.
+   *
+   * @return {NSLModelDOM} Created NSLModelDOM object.
+   */
+  static get ajax() {
+    return new NSLHelperAJAX();
+  }
+
   /**
    * Function for transforming one- and two-dimensional arrays into objects, with a row's value at the offset serving as key.
    *

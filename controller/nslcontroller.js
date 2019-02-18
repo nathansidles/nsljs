@@ -9,13 +9,13 @@ import NSLControllerDOM from './dom/nslcontrollerdom.js';
 /**
  * Class for NSLController objects. NSLControllers are controllers in a Model-View-Controller framework.
  *    They receive notifications that events have occurred and pass that on to models so that those models
- *    can update order the views to update themselves. Occasionally, controllers may order view updates
+ *    can update the views to update themselves. Occasionally, controllers may order view updates
  *    directly.
  * @extends NSLControllerAbstract
  */
 export default class NSLController extends NSLControllerAbstract {
   /**
-   * Function for creating an NSLController object.
+   * Function for creating an NSLController object. Should not be called directly. Instead, use the new() function.
    *
    * @param {Object} parameters - Parameters for creating the object.
    *    controllers: Array of NSLController publishers to which this object subscribes. Optional.
