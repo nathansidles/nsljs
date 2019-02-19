@@ -36,6 +36,7 @@ export default class NSL extends NSLAbstract {
    */
   new( parameters ) {
     parameters = NSLHelper.parametersExtractor( parameters );
+    super.new();
     return new NSL( parameters );
   }
 

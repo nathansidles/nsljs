@@ -15,21 +15,34 @@ export default class NSLModelAbstract extends NSLAbstract {
    * @param {Object} parameters - Parameters for creating the object. Properties:
    *    publishers:  Array of publishers to which this object subscribes.
    *    subscribers: Array of subscribers to which this object subscribes.
+   *    method:           Default HTTP method of the object's request. Optional.
+   *    scheme:           Default schema of the requested resource. Optional.
+   *    host:             Default hostname of the requested resource. To be concatenated with scheme. Optional.
+   *    basePath:         Default shared base path of the requested resource. To be concatenated with host. Optional.
+   *    path:             Default individual resource path of the request. To be concatenated with basePath. Optional.
+   *    collectionFormat: Default type of concatenation for multiple parameter values. Optional.
+   *    parameters:       Default array of parameter/value pairs for the request. Optional.
+   *    callback:         Default callback function of the request. Accepts data as an input. Optional.
    */
   constructor( parameters ) {
     super( parameters );
     if ( typeof parameters !== 'undefined' ) {
       this.data = parameters.data;
+      this.protocol = ( typeof parameters.protocol === 'string' ) ? parameters.protocol : '';
+      this.method = ( typeof parameters.method === 'string' ) ? parameters.method : '';
+      this.scheme = ( typeof parameters.scheme === 'string' ) ? parameters.scheme : '';
+      this.host = ( typeof parameters.host === 'string' ) ? parameters.hsot : '';
+      this.basePath = ( typeof parameters.basePath === 'string' ) ? parameters.basePath : '';
+      this.path = ( typeof parameters.path === 'string' ) ? parameters.path : '';
+      this.collectionFormat = ( typeof parameters.collectionFormat === 'string' ) ? parameters.collectionFormat : '';
+      this.parameters = ( Array.isArray( parameters.parameters ) ) ? parameters.parameters : '';
+      this.callback = ( typeof parameters.callback === 'function' ) ? parameters.callback : '';
     }
-    this.protocol;
-    this.method;
-    this.scheme;
-    this.host;
-    this.basePath;
-    this.path;
-    this.collectionFormat;
-    this.parameters;
-    this.callback;
+  }
+
+  new( parameters ) {
+    parameters = NSLHelper.parametersExtractor( parameters );
+    super.instanceNew( parameters );
   }
 
   /**
@@ -53,6 +66,8 @@ export default class NSLModelAbstract extends NSLAbstract {
   }
 
   ajax( parameters ) {
+    parameters = NSLHelper.parametersExtractor( parameters );
+    parameters.caller = this;
     return NSLHelper.ajax.request( parameters );
   }
 
@@ -62,5 +77,9 @@ export default class NSLModelAbstract extends NSLAbstract {
 
   sse( parameters ) {
 
+  }
+
+  getResponse( parameters ) {
+    this.onNotification( parameters );
   }
 }

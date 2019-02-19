@@ -35,7 +35,7 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
       element.classList.add( object.classes[i] );
     }
 
-    if ( typeof object.attributs !== 'undefined' ) {
+    if ( typeof object.attributes !== 'undefined' ) {
       Object.getOwnPropertyNames( object.attributes ).forEach( function( e ) {
         element.setAttribute( e, object.attributes[e] );
       });
@@ -143,7 +143,7 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
       } else {
         parameters.element = this.nodeExtractor( parameters.element );
       }
-      for ( var node in parameters.element.childNodes ) {
+      for ( const node in parameters.element.childNodes ) {
         if ( parameters.element.childNodes[node].nodeType == 3 ) {
           parameters.element.removeChild( parameters.element.childNodes[node] );
           parameters.element.appendChild( document.createTextNode( parameters.text ) );

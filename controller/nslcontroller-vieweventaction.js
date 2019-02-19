@@ -12,7 +12,7 @@ export default class NSLControllerViewEventAction {
    * @param {Object} view - NSLView for events and actions to be associated with.
    */
   constructor( view ) {
-    this.view = ( view.constructor.name.lastIndexOf( 'NSLView', 0 ) === 0 ) ? view : {};
+    this.publisher = ( view.constructor.name.lastIndexOf( 'NSLView', 0 ) === 0 ) ? view : {};
     this.events = {};
   }
 }

@@ -22,22 +22,12 @@ export default class NSLControllerAbstract extends NSLAbstract {
   constructor( parameters ) {
     super( parameters );
     if ( typeof parameters !== 'undefined' ) {
-      if ( typeof parameters.controllers !== 'undefined' ) {
-        for ( let i = 0; i < parameters.controllers.length; i++ ) {
-          parameters.models[i].addSubscriber( env );
-          this['$views'][parameters.controllers[i].id] = new NSLControllerViewEventAction( parameters.views[i] );
-        }
-      }
-      if ( typeof parameters.models !== 'undefined' ) {
-        for ( let i = 0; i < parameters.models.length; i++ ) {
-          parameters.models[i].addSubscriber( env );
-          this['$views'][parameters.models[i].id] = new NSLControllerViewEventAction( parameters.views[i] );
-        }
-      }
-      if ( typeof parameters.views !== 'undefined' ) {
-        for ( let i = 0; i < parameters.views.length; i++ ) {
-          parameters.views[i].addSubscriber( env );
-          this['$views'][parameters.views[i].id] = new NSLControllerViewEventAction( parameters.views[i] );
+      if ( typeof parameters.publisher !== 'undefined' ) {
+        for ( let i = 0; i < parameters.publisher.length; i++ ) {
+          parameters.publisher[i].addSubscriber( this );
+          if ( parameters.publisher[i].constructor.name.lastIndexOf( 'NSLView', 0 ) === 0 ) {
+            this['$pubs']['$views'][parameters.publisher[i].id] = new NSLControllerViewEventAction( parameters.publisher[i] );
+          }
         }
       }
     }

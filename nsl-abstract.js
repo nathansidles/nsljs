@@ -29,15 +29,57 @@ export default class NSLAbstract {
     parameters = NSLHelper.parametersExtractor( parameters );
     if ( Array.isArray( parameters.publisher ) ) {
       for ( let i = 0; i < parameters.publisher.length; i++ ) {
-        this.addPublisher( parameter.publisher[i] );
+        this.addPublisher( parameters.publisher[i] );
       }
     } else if ( typeof parameters.publisher !== 'undefined' ) {
       this.addPublisher( parameters.publisher );
     }
     if ( Array.isArray( parameters.subscriber ) ) {
-      this.addSubscriber( parameter.subscriber[i] );
+      this.addSubscriber( parameters.subscriber[i] );
     } else if ( typeof parameters.subscriber !== 'undefined' ) {
       this.addSubscriber( parameters.subscriber );
+    }
+  }
+
+  static new( parameters ) {
+    parameters = NSLHelper.parametersExtractor( parameters );
+    if ( typeof parameters.caller !== 'undefined' && parameters.caller.constructor.name.lastIndexOf( 'NSL', 0 ) === 0 ) {
+      Object.getOwnPropertyNames( parameters.caller ).forEach( function( e ) {
+        if ( e !== '$node' && e !== '$listeners' && e !== '$subs' && e !== '$pubs' && e !== '$id' && e !== 'content' ) {
+          parameters.new[e] = parameters.caller[e];
+        }
+      });
+      Object.getOwnPropertyNames( parameters.caller['$pubs'] ).forEach( function( e ) {
+        Object.getOwnPropertyNames( parameters.caller['$pubs'][e] ).forEach( function( f ) {
+          parameters.caller['$pubs'][e][f].publisher.addSubscriber( parameters.new );
+        });
+      });
+      Object.getOwnPropertyNames( parameters.caller['$subs'] ).forEach( function( e ) {
+        Object.getOwnPropertyNames( parameters.caller['$subs'][e] ).forEach( function( f ) {
+          parameters.caller['$subs'][e][f].subscriber.addPublisher( parameters.new );
+        });
+      });
+    }
+  }
+
+  instanceNew( parameters ) {
+    parameters = NSLHelper.parametersExtractor( parameters );
+    if ( typeof parameters.caller !== 'undefined' && parameters.caller.constructor.name.lastIndexOf( 'NSL', 0 ) === 0 ) {
+      Object.getOwnPropertyNames( parameters.caller ).forEach( function( e ) {
+        if ( e !== '$node' && e !== '$listeners' && e !== '$subs' && e !== '$pubs' && e !== '$id' && e !== 'content' ) {
+          parameters.new[e] = parameters.caller[e];
+        }
+      });
+      Object.getOwnPropertyNames( parameters.caller['$pubs'] ).forEach( function( e ) {
+        Object.getOwnPropertyNames( parameters.caller['$pubs'][e] ).forEach( function( f ) {
+          parameters.caller['$pubs'][e][f].publisher.addSubscriber( parameters.new );
+        });
+      });
+      Object.getOwnPropertyNames( parameters.caller['$subs'] ).forEach( function( e ) {
+        Object.getOwnPropertyNames( parameters.caller['$subs'][e] ).forEach( function( f ) {
+          parameters.caller['$subs'][e][f].subscriber.addPublisher( parameters.new );
+        });
+      });
     }
   }
 
@@ -114,7 +156,7 @@ export default class NSLAbstract {
     const env = this;
     Object.getOwnPropertyNames( env['$subs'] ).forEach( function( e ) {
       Object.getOwnPropertyNames( env['$subs'][e] ).forEach( function( f ) {
-        env['$subs'][e][f].onNotification( env );
+        env['$subs'][e][f].subscriber.onNotification( env );
       });
     });
   }

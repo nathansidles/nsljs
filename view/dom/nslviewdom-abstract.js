@@ -172,6 +172,7 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
       this['$listeners'][event] = {};
       this['$node'].addEventListener( event, function() { env.notifySubscribers( event ); } );
     }
+    this['$node'].addEventListener( event, inputFunction );
     this['$listeners'][event][inputFunction] = inputFunction;
   }
 
@@ -234,6 +235,11 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
         parameters.publisher['$subs'][e][f].subscriber.onNotification( parameters );
       });
     });
+  }
+
+  onNotification( parameters ) {
+    console.log( this );
+    this.replaceText({ 'text' : 'hello'});
   }
 
 }

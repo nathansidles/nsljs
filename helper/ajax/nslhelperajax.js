@@ -44,8 +44,10 @@ export default class NSLHelperAJAX extends NSLHelperAJAXAbstract {
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
       if ( this.readyState == 4 && this.status == 200 ) {
+        const data = JSON.parse( this.responseText );
+        parameters.caller.data = data;
+        parameters.caller.notifySubscribers();
         if ( typeof parameters.callback !== 'undefined' ) {
-          const data = JSON.parse( this.responseText );
           parameters.callback( data );
         }
       }

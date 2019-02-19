@@ -12,10 +12,7 @@ export default class NSLViewDOMElementButton extends NSLViewDOMElementButtonAbst
   }
 
   new( parameters ) {
-
-    if ( typeof parameters === 'undefined' ) {
-      parameters = {};
-    }
+    parameters = NSLHelper.parametersExtractor( parameters );
     if ( typeof parameters.appendee === 'undefined' ) {
       parameters.appendee = this['$node'].parentNode;
     }
@@ -32,6 +29,7 @@ export default class NSLViewDOMElementButton extends NSLViewDOMElementButtonAbst
     Object.getOwnPropertyNames( env['$listeners'] ).forEach( function( e ) {
       Object.getOwnPropertyNames( env['$listeners'][e] ).forEach( function( f ) {
         temp.addEventListener( e, env['$listeners'][e][f] );
+        console.log( env['$listeners'][e][f] );
       });
     });
     Object.getOwnPropertyNames( env['$pubs'] ).forEach( function( e ) {

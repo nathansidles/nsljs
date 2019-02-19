@@ -33,7 +33,9 @@ export default class NSLModel extends NSLModelAbstract {
    */
   new( parameters ) {
     parameters = NSLHelper.parametersExtractor( parameters );
-    return new NSLModel( parameters );
+    parameters.new = new NSLModel( parameters );
+    super.new( parameters );
+    return parameters.new;
   }
 
   /**
