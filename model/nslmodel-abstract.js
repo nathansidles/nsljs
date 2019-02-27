@@ -27,16 +27,16 @@ export default class NSLModelAbstract extends NSLAbstract {
   constructor( parameters ) {
     super( parameters );
     if ( typeof parameters !== 'undefined' ) {
-      this.data = parameters.data;
-      this.protocol = ( typeof parameters.protocol === 'string' ) ? parameters.protocol : '';
-      this.method = ( typeof parameters.method === 'string' ) ? parameters.method : '';
-      this.scheme = ( typeof parameters.scheme === 'string' ) ? parameters.scheme : '';
-      this.host = ( typeof parameters.host === 'string' ) ? parameters.hsot : '';
-      this.basePath = ( typeof parameters.basePath === 'string' ) ? parameters.basePath : '';
-      this.path = ( typeof parameters.path === 'string' ) ? parameters.path : '';
-      this.collectionFormat = ( typeof parameters.collectionFormat === 'string' ) ? parameters.collectionFormat : '';
-      this.parameters = ( Array.isArray( parameters.parameters ) ) ? parameters.parameters : '';
-      this.callback = ( typeof parameters.callback === 'function' ) ? parameters.callback : '';
+      this['$data'] = parameters.data;
+      this['$protocol'] = ( typeof parameters.protocol === 'string' ) ? parameters.protocol : '';
+      this['$method'] = ( typeof parameters.method === 'string' ) ? parameters.method : '';
+      this['$scheme'] = ( typeof parameters.scheme === 'string' ) ? parameters.scheme : '';
+      this['$host'] = ( typeof parameters.host === 'string' ) ? parameters.host : '';
+      this['$basePath'] = ( typeof parameters.basePath === 'string' ) ? parameters.basePath : '';
+      this['$path'] = ( typeof parameters.path === 'string' ) ? parameters.path : '';
+      this['$collectionFormat'] = ( typeof parameters.collectionFormat === 'string' ) ? parameters.collectionFormat : '';
+      this['$parameters'] = ( Array.isArray( parameters.parameters ) ) ? parameters.parameters : '';
+      this['$callback'] = ( typeof parameters.callback === 'function' ) ? parameters.callback : '';
     }
   }
 
@@ -53,7 +53,7 @@ export default class NSLModelAbstract extends NSLAbstract {
    * @return {Object} - Data from this class.
    */
   getData( parameters ) {
-    return this.data;
+    return this['$data'];
   }
 
   /**
@@ -62,12 +62,21 @@ export default class NSLModelAbstract extends NSLAbstract {
    * @param {Object} parameters - Parameters for setting the object's data.
    */
   setData( parameters ) {
-    this.data = parameters;
+    this['$data'] = parameters;
   }
 
   ajax( parameters ) {
     parameters = NSLHelper.parametersExtractor( parameters );
     parameters.caller = this;
+    parameters.protocol = ( typeof parameters.protocol === 'string' ) ? parameters.protocol : this['$protocol'];
+    parameters.method = ( typeof parameters.method === 'string' ) ? parameters.method : this['$method'];
+    parameters.scheme = ( typeof parameters.scheme === 'string' ) ? parameters.scheme : this['$scheme'];
+    parameters.host = ( typeof parameters.host === 'string' ) ? parameters.host : this['$host'];
+    parameters.basePath = ( typeof parameters.basePath === 'string' ) ? parameters.basePath : this['$basePath'];
+    parameters.path = ( typeof parameters.path === 'string' ) ? parameters.path : this['$path'];
+    parameters.collectionFormat = ( typeof parameters.collectionFormat === 'string' ) ? parameters.collectionFormat : this['$collectionFormat'];
+    parameters.parameters = ( Array.isArray( parameters.parameters ) ) ? parameters.parameters : this['$parameters'];
+    parameters.callback = ( typeof parameters.callback === 'function' ) ? parameters.callback : this['$callback'];
     return NSLHelper.ajax.request( parameters );
   }
 

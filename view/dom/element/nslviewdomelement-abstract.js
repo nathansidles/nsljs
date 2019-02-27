@@ -1,5 +1,7 @@
 'use strict';
 
+import NSLHelper from '/nsljs/helper/nslhelper.js';
+
 import NSLViewDOMAbstract from './../nslviewdom-abstract.js';
 
 export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
@@ -149,6 +151,15 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
           parameters.element.appendChild( document.createTextNode( parameters.text ) );
         }
       }
+    }
+  }
+
+  setAttribute( parameters ) {
+    const env = this['$node'];
+    if ( typeof parameters.attributes !== 'undefined' ) {
+      Object.getOwnPropertyNames( parameters.attributes ).forEach( function( e ) {
+        env.setAttribute( e, parameters.attributes[e] );
+      });
     }
   }
 

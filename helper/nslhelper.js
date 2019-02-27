@@ -346,4 +346,26 @@ export default class NSLHelper extends NSLHelperAbstract {
   static parametersExtractor( parameters ) {
     return ( ( typeof parameters === 'undefined' ) ? {} : parameters );
   }
+
+  /**
+   * Function for generating a random array.
+   *
+   * @param {Object} parameters - Parameters for this function. Properties:
+   *    length: Length of the content of each element.
+   *    height: Length of the array.
+   *    width:  Length of each element of the outer array.
+   *
+   * @return {Array} Returned array.
+   */
+  static randomArray2D( parameters ) {
+    parameters = this.parametersExtractor( parameters );
+    const tempArray = [];
+    for ( let i = 0; i < parameters.height; i++) {
+      tempArray[i] = [];
+      for ( let j = 0; j < parameters.width; j++ ) {
+        tempArray[i][j] = this.randomString({'length': parameters.length});
+      }
+    }
+    return tempArray;
+  }
 }

@@ -45,14 +45,14 @@ export default class NSLHelperAJAX extends NSLHelperAJAXAbstract {
     xmlhttp.onreadystatechange = function() {
       if ( this.readyState == 4 && this.status == 200 ) {
         const data = JSON.parse( this.responseText );
-        parameters.caller.data = data;
+        parameters.caller['$data'] = data;
         parameters.caller.notifySubscribers();
-        if ( typeof parameters.callback !== 'undefined' ) {
+        if ( typeof parameters.callback === 'function' ) {
           parameters.callback( data );
         }
       }
     };
-    const request = parameters.base + '/' + parameters.path + '/?';
+    const request = parameters.scheme + '://' + parameters.host + '/' + parameters.basePath + '/' + parameters.path + '/?';
     let data = '';
     let count = 0;
     if ( Array.isArray( parameters.parameters ) ) {

@@ -239,7 +239,6 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
 
   onNotification( parameters ) {
     console.log( this );
-    this.replaceText({ 'text' : 'hello'});
   }
 
 }

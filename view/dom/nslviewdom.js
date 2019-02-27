@@ -1,6 +1,8 @@
 'use strict';
 
 import NSLViewDOMAbstract from './nslviewdom-abstract.js';
+
+import NSLViewDOMCollection from './collection/nslviewdomcollection.js';
 import NSLViewDOMElement from './element/nslviewdomelement.js';
 import NSLViewDOMStructure from './structure/nslviewdomstructure.js';
 
@@ -15,6 +17,10 @@ export default class NSLViewDOM extends NSLViewDOMAbstract {
       object = {};
     }
     return new NSLViewDOM( object );
+  }
+
+  get collection() {
+    return new NSLViewDOMCollection();
   }
 
   get element() {

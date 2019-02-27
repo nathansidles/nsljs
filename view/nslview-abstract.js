@@ -7,8 +7,8 @@ import NSLAbstract from './../nsl-abstract.js';
  */
 export default class NSLViewAbstract extends NSLAbstract {
 
-  constructor() {
-    super();
+  constructor( parameters ) {
+    super( parameters );
   }
 
   getData( model ) {

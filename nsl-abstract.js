@@ -11,8 +11,8 @@ export default class NSLAbstract {
    * Function for creating an NSLModelAbstract object.
    *
    * @param {Object} parameters - Parameters for creating the object. Properties:
-   *    publishers:  Array of publishers to which this object subscribes.
-   *    subscribers: Array of subscribers to which this object subscribes.
+   *    publisher:  Array of publishers to which this object subscribes.
+   *    subscriber: Array of subscribers to which this object publishes.
    */
   constructor( parameters ) {
     Object.defineProperty( this, '$id', {
