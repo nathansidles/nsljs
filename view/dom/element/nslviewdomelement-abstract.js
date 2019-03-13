@@ -156,11 +156,9 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
 
   setAttribute( parameters ) {
     const env = this['$node'];
-    if ( typeof parameters.attributes !== 'undefined' ) {
-      Object.getOwnPropertyNames( parameters.attributes ).forEach( function( e ) {
-        env.setAttribute( e, parameters.attributes[e] );
-      });
-    }
+    Object.getOwnPropertyNames( parameters ).forEach( function( e ) {
+      env.setAttribute( e, parameters[e] );
+    });
   }
 
   /**

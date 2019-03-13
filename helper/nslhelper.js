@@ -327,8 +327,8 @@ export default class NSLHelper extends NSLHelperAbstract {
     } else {
       parameters.string += parameters.characters.substr( Math.floor( Math.random() * parameters.characters.length ), 1 );
     }
+    parameters.length -= 1;
     if ( parameters.length > 0 ) {
-      parameters.length -= 1;
       return this.randomStringRecursive( parameters );
     } else {
       return parameters.string;
@@ -367,5 +367,63 @@ export default class NSLHelper extends NSLHelperAbstract {
       }
     }
     return tempArray;
+  }
+
+  /**
+   * Function for finding the least value of an array.
+   *
+   * @param {Object} parameters - Parameters for this function. Properties:
+   *    values: Values to evaluate.
+   *
+   * @return {Array} The least value in array.
+   */
+  static least( parameters ) {
+    parameters = this.parametersExtractor( parameters );
+    let least = parameters.values[0];
+    for ( let i = 0; i < parameters.values.length; i++ ) {
+      if ( parameters.values[i] < least ) {
+        least = parameters.values[i];
+      }
+    }
+    return least;
+  }
+
+  /**
+   * Function for finding the greatest value of an array.
+   *
+   * @param {Object} parameters - Parameters for this function. Properties:
+   *    values: Values to evaluate.
+   *
+   * @return {Array} The greatest value in array.
+   */
+  static greatest( parameters ) {
+    parameters = this.parametersExtractor( parameters );
+    let greatest = parameters.values[0];
+    for ( let i = 0; i < parameters.values.length; i++ ) {
+      if ( parameters.values[i] > greatest ) {
+        greatest = parameters.values[i];
+      }
+    }
+    return greatest;
+  }
+
+  /**
+   * Function for determining if an object's combination of property names is defined.
+   *
+   * @param {Object} parameters - Parameters for this function. Properties:
+   *    object: Object to evaluate properties of.
+   *    names:  Array of names to evalute.
+   *
+   * @return {Boolean} The boolean truth value of these properties' definition.
+   */
+  static defined( parameters ) {
+    let property = parameters.object;
+    while ( parameters.names.length > 0 ) {
+      property = property[parameters.names.shift()];
+      if ( typeof property === 'undefined' ) {
+        return false;
+      }
+    }
+    return ( typeof property !== 'undefined' );
   }
 }
