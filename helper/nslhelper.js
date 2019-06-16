@@ -426,4 +426,24 @@ export default class NSLHelper extends NSLHelperAbstract {
     }
     return ( typeof property !== 'undefined' );
   }
+
+  /**
+   * Function for dividing an integer by two. The result will always be an
+   * integer less than or equal to the numerator and greater than or equal to
+   * zero.
+   *
+   * @param {Object} parameters - Parameters for this function. Properties:
+   *    numerator:   Number to divide.
+   *    denominator: Number by which to divide. Optional. Default: 2.
+   *
+   * @return {Boolean} Integer result.
+   */
+  static integerDivider( parameters ) {
+    parameters = this.parametersExtractor( parameters );
+    const numerator = Math.floor( parameters.numerator );
+    if ( parameters.denominator === 0 ) {
+      return 0;
+    }
+    return Math.floor( numerator / parameters.denominator );
+  }
 }

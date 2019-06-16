@@ -2,8 +2,8 @@
 
 import NSLHelper from '/nsljs/helper/nslhelper.js';
 
-import NSLViewDOMAbstract from './../nslviewdom-abstract.js';
-import NSLViewDOMElement from './../element/nslviewdomelement.js';
+import NSLViewDOMAbstract from './../../nslviewdom-abstract.js';
+import NSLViewDOMElement from './../../element/nslviewdomelement.js';
 
 /**
  * Class for creating NSLViewCollectionAbstract objects. This is a pseudo-

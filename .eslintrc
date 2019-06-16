@@ -9,6 +9,6 @@
     },
     "rules": {
         "semi": "error",
-        "max-len": ["error", 160]
+        "max-len": ["error", 80]
     }
 }
