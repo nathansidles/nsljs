@@ -9,7 +9,8 @@ export default class NSLViewDOMElementButtonAbstract extends NSLViewDOMElementAb
     super( object );
     if ( typeof object !== 'undefined' ) {
       let env = this;
-      this['$node'] = this.create({ 'appendee' : object.appendee, 'tagName' : 'div', 'classes' : [ 'nsl-element-button' ] });
+      this['$node'] = this.create({
+        'appendee' : object.appendee, 'tagName' : 'div', 'classes' : [ 'nsl-element-button' ] });
       this.content = new NSLViewDOMElement({ 'appendee' : env['$node'], 'tagName' : 'div', 'classes' : [ 'nsl-title' ], 'content' : object.content });
     }
   }

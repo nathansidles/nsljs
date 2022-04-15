@@ -1,15 +1,21 @@
 'use strict';
 
-import NSLHelper from '/nsljs/helper/nslhelper.js';
+import NSLViewTitleAbstract from './nslviewtitle-abstract.js';
 
-export default class NSLViewTitle {
+export default class NSLViewTitle extends NSLViewTitleAbstract {
 
-  constructor( baseTitle ) {
-
+  constructor( parameters ) {
+    super( parameters )
   }
 
-  new( baseTitle ) {
-    return new NSLViewTitle( baseeTitle );
+  new( object ) {
+    if ( typeof object === 'undefined' ) {
+      object = {};
+    }
+    if ( typeof object.content !== 'undefined' ) {
+      this.set( object );
+    }
+    return new NSLViewTitle( object );
   }
 
 }

@@ -2,15 +2,15 @@
 
 import NSLHelper from '/nsljs/helper/nslhelper.js';
 
-import NSLViewDOMAbstract from './../nslviewdom-abstract.js';
-import NSLViewDOMElement from './../element/nslviewdomelement.js';
+import NSLViewDOMCollectionAbstract from './../nslviewdomcollection-abstract.js';
+import NSLViewDOMElement from './../../element/nslviewdomelement.js';
 
 /**
  * Class for creating NSLViewCollectionAbstract objects. This is a pseudo-
  * abstract class.
  * @extends NSLViewDOMAbstract
  */
-export default class NSLViewDOMCollectionAbstract extends NSLViewDOMAbstract {
+export default class NSLViewDOMCollectionSelectAbstract extends NSLViewDOMCollectionAbstract {
   /**
    * Function for creating an NSLViewDOMCollectionAbstract object.
    *
@@ -30,9 +30,7 @@ export default class NSLViewDOMCollectionAbstract extends NSLViewDOMAbstract {
           'classes': ['nsl-collection-container'],
         });
       }
-      this['$content'] =
-        ( typeof params.content === 'Object' ) ? params.content : {};
-      this['$content'].data = {};
     }
   }
+
 }

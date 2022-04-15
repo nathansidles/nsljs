@@ -16,7 +16,8 @@ import NSLView from './view/nslview.js';
  */
 export default class NSL extends NSLAbstract {
   /**
-   * Function for creating an NSL object. Should not be called directly. Instead, use the new() function.
+   * Function for creating an NSL object.
+   *  Should not be called directly. Instead, use the new() function.
    *
    * @param {Object} parameters - Parameters for creating the object. Properties:
    *    publishers:  Array of publishers to which this object subscribes.

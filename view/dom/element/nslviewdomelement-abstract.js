@@ -1,15 +1,25 @@
 'use strict';
 
-import NSLHelper from '/nsljs/helper/nslhelper.js';
-
 import NSLViewDOMAbstract from './../nslviewdom-abstract.js';
 
+/**
+ * NSLViewDomElementAbstract class. Contain essential functions and properties
+ * for NSLViewDOMElement objects.
+ */
 export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
 
+  /**
+   * Function for constructing an NSLViewDOMElement object.
+   *
+   * @param {Object} object - Object with properties for instantiating this
+   * class. Expected properties include:
+   * - appendee: DOM or NSL object on which to append the instantiated object.
+   *             If the appendee is a DOM object, an NSL object is
+   */
   constructor( object ) {
     super( object );
     if ( typeof object !== 'undefined' ) {
-      if ( typeof object.tagName !== 'undefined' ) {
+      if ( typeof object.appendee.nodeName === 'undefined' ) {
         this['$node'] = this.create( object );
       } else {
         this['$node'] = object.appendee;
@@ -18,18 +28,23 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
   }
 
   /**
-   * Function for creating an HTML element. Allows customization of placement, tag name, classes, attributes, and text content.
+   * Function for creating an HTML element. Allows customization of placement,
+   * tag name, classes, attributes, and text content.
    *
    * @param {Object} appendee - HTMLElement or NSLViewDOM object on which to attach new element. Required.
-   * @param {String} tagName - Type of HTML element to create. Required.
+   * @param {String} tagName - Type of HTML element to create (optional, defaults to 'div').
    * @param {Array} classes - Classes to attach to new element (optional).
    * @param {Object} attributes - Attributes to attach to new element (optional).
    * @param {String} content - Text to attach to new element (optional).
-   * @param {Object} prependee -  HTMLElement or NSLViewDOM object on which to prepend new element. Optional.
+   * @param {Object} prependee -  HTMLElement or NSLViewDOM object on which to prepend new element (optional).
    *
    * @return {Object} - Created HTML element.
    */
   create( object ) {
+
+    if( typeof object.tagName === 'undefined' ) {
+      object.tagName = 'div';
+    }
     var element = document.createElement( object.tagName );
     object.appendee = this.nodeExtractor( object.appendee );
 
@@ -221,7 +236,5 @@ export default class NSLViewDOMElementAbstract extends NSLViewDOMAbstract {
     }
 
     return tempReturn;
-
   }
-
 }

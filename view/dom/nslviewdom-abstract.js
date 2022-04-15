@@ -26,7 +26,6 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
    * @return {Object} - HTMLElement object.
   */
   nodeExtractor( node ) {
-
     if ( typeof node !== 'undefined' ) {
       var nodeType = node.constructor.name;
       if ( nodeType.lastIndexOf( 'HTML', 0 ) === 0 && nodeType.indexOf( 'Element', nodeType.length - 7 ) !== 0 ) {
@@ -53,6 +52,19 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
     node.parentNode.removeChild( node );
     this['$node'] = null;
   }
+
+  /**
+   * Function for copying an HTML node.
+   *
+   * @param {Object} node - NSLViewDOM object or HTLMElement to copy. Optional. If missing, the current object's element is copied.
+   */
+   copy( node ) {
+     if ( typeof node === 'undefined' ) {
+       node = this['$node'];
+     }
+     return NSLHelper.deepCopy( node );
+   }
+
 
   /**
    * Function for clearing out a HTML node or NSLViewDOM object recursively. The node or object itself remains.
@@ -140,7 +152,7 @@ export default class NSLViewDOMAbstract extends NSLViewAbstract {
     if ( child.constructor.name.lastIndexOf( 'NSLViewDOM' ) === 0 && name.lastIndexOf( '$' ) === -1 ) {
       this[name] = child;
     } else {
-      throw 'Parameter is not an NSLDOMView object.';
+      throw 'Parameter is not an NSLViewDOM object.';
     }
   }
 

@@ -2,13 +2,10 @@
 
 import NSLHelper from '/nsljs/helper/nslhelper.js';
 
-import NSLViewDOMCollectionAbstract from './nslviewdomcollection-abstract.js';
+import NSLViewDOMCollectionSelectAbstract from './nslviewdomcollectionselect-abstract.js';
 
-import NSLViewDOMCollectionTable from './table/nslviewdomcollectiontable.js';
 
-import NSLViewDOMCollectionSelect from './select/nslviewdomcollectionselect.js';
-
-export default class NSLViewDOMCollection extends NSLViewDOMCollectionAbstract {
+export default class NSLViewDOMCollectionSelect extends NSLViewDOMCollectionSelectAbstract {
 
   /**
    * Function for creating an NSLViewDOMCollection object.
@@ -24,15 +21,7 @@ export default class NSLViewDOMCollection extends NSLViewDOMCollectionAbstract {
 
   new( parameters ) {
     parameters = NSLHelper.parametersExtractor( parameters );
-    return new NSLViewDOMCollection( parameters );
-  }
-
-  get select() {
-    return new NSLViewDOMCollectionSelect();
-  }
-
-  get table() {
-    return new NSLViewDOMCollectionTable();
+    return new NSLViewDOMSCollectionSelect( parameters );
   }
 
 }
