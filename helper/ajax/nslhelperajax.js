@@ -66,7 +66,7 @@ export default class NSLHelperAJAX extends NSLHelperAJAXAbstract {
           if ( count > 0 ) {
             data += '&';
           }
-          data += encodeURIComponent( parameter ) + '=' + encodeURIComponent( parameters[parameter] );
+          data += encodeURIComponent( parameter ) + '=' + encodeURIComponent( parameters.parameters[parameter] );
           count++;
         }
       }
